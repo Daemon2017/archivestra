@@ -15,11 +15,27 @@ def get_driver():
 
 
 def upsert_descriptions(session, archive, fund, inventory, value, description):
-    session.transaction().execute(
-        """
+    query = """
+        DECLARE $id AS Utf8;
+        DECLARE $archive AS Utf8;
+        DECLARE $fund AS Utf8;
+        DECLARE $inventory AS Utf8;
+        DECLARE $value AS Utf8;
+        DECLARE $description AS Utf8;
         UPSERT INTO descriptions (id, archive, fund, inventory, value, description) 
-        VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}');
-        """.format(uuid.uuid4(), archive, fund, inventory, value, description),
+        VALUES ($id, $archive, $fund, $inventory, $value, $description);
+        """.format(uuid.uuid4(), archive, fund, inventory, value, description)
+    prepared_query = session.prepare(query)
+    session.transaction().execute(
+        prepared_query,
+        {
+            '$id': uuid.uuid4(),
+            '$archive': archive,
+            '$fund': fund,
+            '$inventory': inventory,
+            '$value': value,
+            '$description': description,
+        },
         commit_tx=True,
     )
 
@@ -36,7 +52,7 @@ def select_descriptions_description(session, archive, fund, inventory, value):
         and fund = $fund
         and inventory = $inventory
         and value = $value;
-        """.format(archive, fund, inventory, value)
+        """
     prepared_query = session.prepare(query)
     result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
         prepared_query,
@@ -52,11 +68,29 @@ def select_descriptions_description(session, archive, fund, inventory, value):
 
 
 def upsert_contents(session, archive, fund, inventory, value, page, content):
-    session.transaction().execute(
-        """
+    query = """
+        DECLARE $id AS Utf8;
+        DECLARE $archive AS Utf8;
+        DECLARE $fund AS Utf8;
+        DECLARE $inventory AS Utf8;
+        DECLARE $value AS Utf8;
+        DECLARE $page AS Utf8;
+        DECLARE $content AS Utf8;
         UPSERT INTO contents (id, archive, fund, inventory, value, page, content) 
-        VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}');
-        """.format(uuid.uuid4(), archive, fund, inventory, value, page, content),
+        VALUES ($id, $archive, $fund, $inventory, $value, $page, $content);
+        """
+    prepared_query = session.prepare(query)
+    session.transaction().execute(
+        prepared_query,
+        {
+            '$id': uuid.uuid4(),
+            '$archive': archive,
+            '$fund': fund,
+            '$inventory': inventory,
+            '$value': value,
+            '$page': page,
+            '$content': content,
+        },
         commit_tx=True,
     )
 
@@ -73,7 +107,7 @@ def select_contents_page(session, archive, fund, inventory, value):
         and fund = $fund
         and inventory = $inventory
         and value = $value;
-        """.format(archive, fund, inventory, value)
+        """
     prepared_query = session.prepare(query)
     result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
         prepared_query,
