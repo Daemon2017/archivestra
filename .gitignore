@@ -1,7 +1,7 @@
 .github/
 .ipynb_checkpoints/
 .idea/
-api-key.yaml
-key.json
-data/
-responses/
+back/api-key.yaml
+back/key.json
+back/data/
+back/responses/

@@ -9,9 +9,9 @@ import ydb
 
 data_dir = 'data'
 x_folder_id = 'b1ge7l6307kuksqnm13c'
+ocr_key_path = 'api-key.yaml'
 db_key_path = 'key.json'
 database = '/ru-central1/b1gq47q3820jil5087ik/etn40a53g48m08r3759h'
-ocr_key_path = 'api-key.yaml'
 
 
 def get_api_key(key_file_path):
@@ -27,7 +27,7 @@ def read_description(path):
         return description[:64]
 
 
-def select_descriptions(session, archive, fund, inventory, value):
+def select_descriptions_description(session, archive, fund, inventory, value):
     result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
         """
         SELECT description
@@ -52,7 +52,7 @@ def upsert_descriptions(session, archive, fund, inventory, value, description):
     )
 
 
-def select_contents(session, archive, fund, inventory, value):
+def select_contents_page(session, archive, fund, inventory, value):
     result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
         """
         SELECT page
@@ -77,7 +77,7 @@ def upsert_contents(session, archive, fund, inventory, value, page, content):
     )
 
 
-def send_request(content, api_key):
+def get_content(content, api_key):
     url = "https://ocr.api.cloud.yandex.net/ocr/v1/recognizeText"
     payload = json.dumps({
         "mimeType": "image",
@@ -117,7 +117,7 @@ def main():
                             print('ОШИБКА: отсутствует файл description.txt! '
                                   'Перехожу к следующему делу...')
                             continue
-                        if select_descriptions(session, archive, fund, inventory, value):
+                        if select_descriptions_description(session, archive, fund, inventory, value):
                             print('Содержимое файла description.txt уже загружено в БД! '
                                   'Повторная выгрузка не будет осуществлена.')
                         else:
@@ -125,7 +125,7 @@ def main():
                             upsert_descriptions(session, archive, fund, inventory, value, description)
                             print('Содержимое файла description.txt успешно выгружено.')
                         print('Распознаю и выгружаю страницы дела...')
-                        contents = select_contents(session, archive, fund, inventory, value)
+                        contents = select_contents_page(session, archive, fund, inventory, value)
                         filenames = list(filter(lambda f: f.endswith('.jpg') or f.endswith('.png'), os.listdir(path)))
                         for filename in filenames:
                             page = os.path.splitext(filename)[0]
@@ -136,13 +136,14 @@ def main():
                             file_path = os.path.join(data_dir, archive, fund, inventory, value, filename)
                             with open(file_path, 'rb') as image:
                                 content_base64 = base64.b64encode(image.read()).decode()
-                                content = send_request(content_base64, api_key)
-                                if 'error' in json.loads(content):
+                                content = get_content(content_base64, api_key)
+                                content_json = json.loads(content)
+                                if 'error' in content_json:
                                     print('Ошибка в ходе распознавания страницы {0}! '
                                           'Перехожу к следующей странице...'.format(page))
                                     continue
                                 else:
-                                    upsert_contents(session, archive, fund, inventory, value, page, content)
+                                    upsert_contents(session, archive, fund, inventory, value, page, json.dumps(content))
                                     print('Страница {0} успешно выгружена.'.format(page))
 
 
