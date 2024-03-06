@@ -36,8 +36,7 @@ def get_svg():
             for line in block['lines']:
                 for word in line['words']:
                     vertices = word['boundingBox']['vertices']
-                    sub_element = etree.SubElement(
-                        root,
+                    element = etree.Element(
                         'text',
                         x=vertices[0]['x'],
                         y=vertices[0]['y'],
@@ -45,7 +44,8 @@ def get_svg():
                         lengthAdjust='spacingAndGlyphs',
                         style='font-size: {0}'.format(str(int(vertices[2]['y']) - int(vertices[0]['y'])))
                     )
-                    sub_element.text = word['text']
+                    element.text = word['text']
+                    root.append(element)
         return Response(etree.tostring(root, pretty_print=True, encoding='utf-8'), mimetype='image/svg+xml')
 
 
