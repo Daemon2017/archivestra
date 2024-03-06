@@ -32,6 +32,7 @@ def get_svg():
             width=text_annotation['width'],
             xmlns='http://www.w3.org/2000/svg'
         )
+        elements = []
         for block in data['result']['textAnnotation']['blocks']:
             for line in block['lines']:
                 for word in line['words']:
@@ -45,7 +46,9 @@ def get_svg():
                         style='font-size: {0}'.format(str(int(vertices[2]['y']) - int(vertices[0]['y'])))
                     )
                     element.text = word['text']
-                    root.append(element)
+                    elements.append(element)
+        for element in elements:
+            root.append(element)
         return Response(etree.tostring(root, pretty_print=True, encoding='utf-8'), mimetype='image/svg+xml')
 
 
