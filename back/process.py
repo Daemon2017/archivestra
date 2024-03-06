@@ -87,8 +87,7 @@ def main():
                                           'Перехожу к следующей странице...'.format(page))
                                     continue
                                 else:
-                                    db.upsert_contents(session, archive, fund, inventory, value, page,
-                                                       json.dumps(content))
+                                    db.upsert_contents(session, archive, fund, inventory, value, page, content)
                                     print('Страница {0} успешно выгружена.'.format(page))
 
 

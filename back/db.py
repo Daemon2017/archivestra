@@ -29,7 +29,7 @@ def upsert_descriptions(session, archive, fund, inventory, value, description):
     session.transaction().execute(
         prepared_query,
         {
-            '$id': uuid.uuid4(),
+            '$id': str(uuid.uuid4()),
             '$archive': archive,
             '$fund': fund,
             '$inventory': inventory,
@@ -83,7 +83,7 @@ def upsert_contents(session, archive, fund, inventory, value, page, content):
     session.transaction().execute(
         prepared_query,
         {
-            '$id': uuid.uuid4(),
+            '$id': str(uuid.uuid4()),
             '$archive': archive,
             '$fund': fund,
             '$inventory': inventory,
@@ -149,4 +149,4 @@ def select_contents_content(session, archive, fund, inventory, value, page):
         },
         commit_tx=True,
     )
-    return result_sets[0].rows[0]['content'].strip('\"')
+    return result_sets[0].rows[0]['content']
