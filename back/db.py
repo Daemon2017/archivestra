@@ -25,15 +25,27 @@ def upsert_descriptions(session, archive, fund, inventory, value, description):
 
 
 def select_descriptions_description(session, archive, fund, inventory, value):
-    result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
-        """
+    query = """
+        DECLARE $archive AS Utf8;
+        DECLARE $fund AS Utf8;
+        DECLARE $inventory AS Utf8;
+        DECLARE $value AS Utf8;
         SELECT description
         FROM descriptions
-        WHERE archive = '{0}'
-        and fund = '{1}'
-        and inventory = '{2}'
-        and value = '{3}';
-        """.format(archive, fund, inventory, value),
+        WHERE archive = $archive
+        and fund = $fund
+        and inventory = $inventory
+        and value = $value;
+        """.format(archive, fund, inventory, value)
+    prepared_query = session.prepare(query)
+    result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
+        prepared_query,
+        {
+            '$archive': archive,
+            '$fund': fund,
+            '$inventory': inventory,
+            '$value': value,
+        },
         commit_tx=True,
     )
     return result_sets[0].rows
@@ -50,31 +62,57 @@ def upsert_contents(session, archive, fund, inventory, value, page, content):
 
 
 def select_contents_page(session, archive, fund, inventory, value):
-    result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
-        """
+    query = """
+        DECLARE $archive AS Utf8;
+        DECLARE $fund AS Utf8;
+        DECLARE $inventory AS Utf8;
+        DECLARE $value AS Utf8;
         SELECT page
         FROM contents
-        WHERE archive = '{0}'
-        and fund = '{1}'
-        and inventory = '{2}'
-        and value = '{3}';
-        """.format(archive, fund, inventory, value),
+        WHERE archive = $archive
+        and fund = $fund
+        and inventory = $inventory
+        and value = $value;
+        """.format(archive, fund, inventory, value)
+    prepared_query = session.prepare(query)
+    result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
+        prepared_query,
+        {
+            '$archive': archive,
+            '$fund': fund,
+            '$inventory': inventory,
+            '$value': value,
+        },
         commit_tx=True,
     )
     return result_sets[0].rows
 
 
 def select_contents_content(session, archive, fund, inventory, value, page):
-    result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
-        """
+    query = f"""
+        DECLARE $archive AS Utf8;
+        DECLARE $fund AS Utf8;
+        DECLARE $inventory AS Utf8;
+        DECLARE $value AS Utf8;
+        DECLARE $page AS Utf8;
         SELECT content
         FROM contents
-        WHERE archive = '{0}'
-        and fund = '{1}'
-        and inventory = '{2}'
-        and value = '{3}'
-        and page = '{4}';
-        """.format(archive, fund, inventory, value, page),
+        WHERE archive = $archive
+        and fund = $fund
+        and inventory = $inventory
+        and value = $value
+        and page = $page;
+        """
+    prepared_query = session.prepare(query)
+    result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
+        prepared_query,
+        {
+            '$archive': archive,
+            '$fund': fund,
+            '$inventory': inventory,
+            '$value': value,
+            '$page': page,
+        },
         commit_tx=True,
     )
     return result_sets[0].rows[0]['content'].strip('\"')
