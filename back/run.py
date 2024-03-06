@@ -1,32 +1,14 @@
 import json
 
-import ydb
 from flask import Flask, request, Response
 from flask_cors import CORS
 from lxml import etree
 from waitress import serve
 
+from back import db
+
 app = Flask(__name__)
 cors = CORS(app)
-
-db_key_path = 'key.json'
-database = '/ru-central1/b1gq47q3820jil5087ik/etn40a53g48m08r3759h'
-
-
-def select_contents_content(session, archive, fund, inventory, value, page):
-    result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
-        """
-        SELECT content
-        FROM contents
-        WHERE archive = '{0}'
-        and fund = '{1}'
-        and inventory = '{2}'
-        and value = '{3}'
-        and page = '{4}';
-        """.format(archive, fund, inventory, value, page),
-        commit_tx=True,
-    )
-    return result_sets[0].rows[0]['content'].strip('\"')
 
 
 @app.route('/svg', methods=['GET'])
@@ -37,15 +19,11 @@ def get_svg():
     inventory = request_data_json['inventory']
     value = request_data_json['value']
     page = request_data_json['page']
-    driver = ydb.Driver(
-        endpoint='grpcs://ydb.serverless.yandexcloud.net:2135',
-        database=database,
-        credentials=ydb.iam.ServiceAccountCredentials.from_file(db_key_path),
-    )
+    driver = db.get_driver()
     with driver:
         driver.wait(fail_fast=True, timeout=5)
         session = driver.table_client.session().create()
-        contents = select_contents_content(session, archive, fund, inventory, value, page)
+        contents = db.select_contents_content(session, archive, fund, inventory, value, page)
         data = json.loads(contents)
         text_annotation = data['result']['textAnnotation']
         root = etree.Element(

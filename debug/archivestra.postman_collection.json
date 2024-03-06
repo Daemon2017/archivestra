@@ -1,0 +1,40 @@
+{
+	"info": {
+		"_postman_id": "da58ed52-eae6-4f59-858c-22dd219b25e8",
+		"name": "archivestra",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"archive\": \"ГАУО\",\r\n    \"fund\": \"970\",\r\n    \"inventory\": \"1\",\r\n    \"value\": \"0\",\r\n    \"page\": \"5\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/svg",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"svg"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

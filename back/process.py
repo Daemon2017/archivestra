@@ -1,17 +1,15 @@
 import base64
 import json
 import os
-import uuid
 
 import requests
 import yaml
-import ydb
+
+from back import db
 
 data_dir = 'data'
 x_folder_id = 'b1ge7l6307kuksqnm13c'
 ocr_key_path = 'api-key.yaml'
-db_key_path = 'key.json'
-database = '/ru-central1/b1gq47q3820jil5087ik/etn40a53g48m08r3759h'
 
 
 def get_api_key(key_file_path):
@@ -25,56 +23,6 @@ def read_description(path):
     with open(os.path.join(path, 'description.txt'), mode='r', encoding='utf-8') as file:
         description = file.read()
         return description[:64]
-
-
-def select_descriptions_description(session, archive, fund, inventory, value):
-    result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
-        """
-        SELECT description
-        FROM descriptions
-        WHERE archive = '{0}'
-        and fund = '{1}'
-        and inventory = '{2}'
-        and value = '{3}';
-        """.format(archive, fund, inventory, value),
-        commit_tx=True,
-    )
-    return result_sets[0].rows
-
-
-def upsert_descriptions(session, archive, fund, inventory, value, description):
-    session.transaction().execute(
-        """
-        UPSERT INTO descriptions (id, archive, fund, inventory, value, description) 
-        VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}');
-        """.format(uuid.uuid4(), archive, fund, inventory, value, description),
-        commit_tx=True,
-    )
-
-
-def select_contents_page(session, archive, fund, inventory, value):
-    result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
-        """
-        SELECT page
-        FROM contents
-        WHERE archive = '{0}'
-        and fund = '{1}'
-        and inventory = '{2}'
-        and value = '{3}';
-        """.format(archive, fund, inventory, value),
-        commit_tx=True,
-    )
-    return result_sets[0].rows
-
-
-def upsert_contents(session, archive, fund, inventory, value, page, content):
-    session.transaction().execute(
-        """
-        UPSERT INTO contents (id, archive, fund, inventory, value, page, content) 
-        VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}');
-        """.format(uuid.uuid4(), archive, fund, inventory, value, page, content),
-        commit_tx=True,
-    )
 
 
 def get_content(content, api_key):
@@ -97,11 +45,7 @@ def get_content(content, api_key):
 
 def main():
     api_key = get_api_key(ocr_key_path)
-    driver = ydb.Driver(
-        endpoint='grpcs://ydb.serverless.yandexcloud.net:2135',
-        database=database,
-        credentials=ydb.iam.ServiceAccountCredentials.from_file(db_key_path),
-    )
+    driver = db.get_driver()
     with driver:
         driver.wait(fail_fast=True, timeout=5)
         session = driver.table_client.session().create()
@@ -117,15 +61,15 @@ def main():
                             print('ОШИБКА: отсутствует файл description.txt! '
                                   'Перехожу к следующему делу...')
                             continue
-                        if select_descriptions_description(session, archive, fund, inventory, value):
+                        if db.select_descriptions_description(session, archive, fund, inventory, value):
                             print('Содержимое файла description.txt уже загружено в БД! '
                                   'Повторная выгрузка не будет осуществлена.')
                         else:
                             description = read_description(path)
-                            upsert_descriptions(session, archive, fund, inventory, value, description)
+                            db.upsert_descriptions(session, archive, fund, inventory, value, description)
                             print('Содержимое файла description.txt успешно выгружено.')
                         print('Распознаю и выгружаю страницы дела...')
-                        contents = select_contents_page(session, archive, fund, inventory, value)
+                        contents = db.select_contents_page(session, archive, fund, inventory, value)
                         filenames = list(filter(lambda f: f.endswith('.jpg') or f.endswith('.png'), os.listdir(path)))
                         for filename in filenames:
                             page = os.path.splitext(filename)[0]
@@ -143,7 +87,8 @@ def main():
                                           'Перехожу к следующей странице...'.format(page))
                                     continue
                                 else:
-                                    upsert_contents(session, archive, fund, inventory, value, page, json.dumps(content))
+                                    db.upsert_contents(session, archive, fund, inventory, value, page,
+                                                       json.dumps(content))
                                     print('Страница {0} успешно выгружена.'.format(page))
 
 
