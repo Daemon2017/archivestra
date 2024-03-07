@@ -177,7 +177,7 @@ def upsert_contents(session, archive, fund, inventory, value, page, content):
 
 def select_contents_archive(session):
     query = """
-        SELECT DISTINCT page
+        SELECT DISTINCT archive
         FROM contents;
         """
     prepared_query = session.prepare(query)
@@ -192,7 +192,7 @@ def select_contents_archive(session):
 def select_contents_fund(session, archive):
     query = """
         DECLARE $archive AS Utf8;
-        SELECT DISTINCT page
+        SELECT DISTINCT fund
         FROM contents
         WHERE archive = $archive;
         """
@@ -211,7 +211,7 @@ def select_contents_inventory(session, archive, fund):
     query = """
         DECLARE $archive AS Utf8;
         DECLARE $fund AS Utf8;
-        SELECT DISTINCT page
+        SELECT DISTINCT inventory
         FROM contents
         WHERE archive = $archive
         and fund = $fund;
@@ -233,7 +233,7 @@ def select_contents_value(session, archive, fund, inventory):
         DECLARE $archive AS Utf8;
         DECLARE $fund AS Utf8;
         DECLARE $inventory AS Utf8;
-        SELECT DISTINCT page
+        SELECT DISTINCT value
         FROM contents
         WHERE archive = $archive
         and fund = $fund

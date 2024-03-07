@@ -72,14 +72,14 @@ def main():
                         )
                         print('Содержимое файла description.txt успешно выгружено.')
                     print('Распознаю и выгружаю страницы дела...')
-                    contents = pool.retry_operation_sync(
+                    response = pool.retry_operation_sync(
                         db.select_contents_page,
                         None, archive, fund, inventory, value
                     )
-                    filenames = list(filter(lambda f: f.endswith('.jpg') or f.endswith('.png'), os.listdir(path)))
+                    filenames = list(filter(lambda f: f.endswith('.jpg'), os.listdir(path)))
                     for filename in filenames:
                         page = os.path.splitext(filename)[0]
-                        if page in [row['page'] for row in contents]:
+                        if page in [row['page'] for row in response]:
                             print('Страница {0} уже распознана и выгружена в БД! '
                                   'Перехожу к следующей странице...'.format(page))
                             continue

@@ -12,19 +12,73 @@ cors = CORS(app)
 pool = db.get_session_pool()
 
 
-@app.route('/contents', methods=['GET'])
-def get_contents():
-    request_data_json = json.loads(request.data)
-    archive = request_data_json['archive']
-    fund = request_data_json['fund']
-    inventory = request_data_json['inventory']
-    value = request_data_json['value']
-    page = request_data_json['page']
-    content = pool.retry_operation_sync(
+@app.route('/contents_archive', methods=['GET'])
+def get_contents_archive():
+    response = pool.retry_operation_sync(
+        db.select_contents_archive,
+        None
+    )
+    archives = [row['archive'] for row in response]
+    archives.sort()
+    return Response(json.dumps(archives), mimetype='application/json')
+
+
+@app.route('/contents_fund', methods=['GET'])
+def get_contents_fund():
+    rq_json = json.loads(request.data)
+    response = pool.retry_operation_sync(
+        db.select_contents_fund,
+        None, rq_json['archive']
+    )
+    funds = [row['fund'] for row in response]
+    funds.sort()
+    return Response(json.dumps(funds), mimetype='application/json')
+
+
+@app.route('/contents_inventory', methods=['GET'])
+def get_contents_inventory():
+    rq_json = json.loads(request.data)
+    response = pool.retry_operation_sync(
+        db.select_contents_inventory,
+        None, rq_json['archive'], rq_json['fund']
+    )
+    inventories = [row['inventory'] for row in response]
+    inventories.sort()
+    return Response(json.dumps(inventories), mimetype='application/json')
+
+
+@app.route('/contents_value', methods=['GET'])
+def get_contents_value():
+    rq_json = json.loads(request.data)
+    response = pool.retry_operation_sync(
+        db.select_contents_value,
+        None, rq_json['archive'], rq_json['fund'], rq_json['inventory']
+    )
+    values = [row['value'] for row in response]
+    values.sort()
+    return Response(json.dumps(values), mimetype='application/json')
+
+
+@app.route('/contents_page', methods=['GET'])
+def get_contents_page():
+    rq_json = json.loads(request.data)
+    response = pool.retry_operation_sync(
+        db.select_contents_page,
+        None, rq_json['archive'], rq_json['fund'], rq_json['inventory'], rq_json['value']
+    )
+    pages = [int(row['page']) for row in response]
+    pages.sort()
+    return Response(json.dumps(pages), mimetype='application/json')
+
+
+@app.route('/contents_content', methods=['GET'])
+def get_contents_content():
+    rq_json = json.loads(request.data)
+    response = pool.retry_operation_sync(
         db.select_contents_content,
-        None, archive, fund, inventory, value, page
+        None, rq_json['archive'], rq_json['fund'], rq_json['inventory'], rq_json['value'], rq_json['page']
     )[0]['content']
-    data = json.loads(content)
+    data = json.loads(response)
     text_annotation = data['result']['textAnnotation']
     root = etree.Element(
         'svg',
