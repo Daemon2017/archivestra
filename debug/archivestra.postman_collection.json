@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "svg",
+			"name": "contents_content",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -23,14 +23,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/svg",
+					"raw": "http://localhost:8080/contents_content",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"svg"
+						"contents_content"
 					]
 				}
 			},

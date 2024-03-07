@@ -286,7 +286,7 @@ def select_contents_content(session, archive, fund, inventory, value, page):
         DECLARE $inventory AS Utf8;
         DECLARE $value AS Utf8;
         DECLARE $page AS Utf8;
-        SELECT content
+        SELECT DISTINCT content
         FROM contents
         WHERE archive = $archive
         and fund = $fund
@@ -306,4 +306,4 @@ def select_contents_content(session, archive, fund, inventory, value, page):
         },
         commit_tx=True,
     )
-    return result_sets[0].rows[0]['content']
+    return result_sets[0].rows

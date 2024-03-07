@@ -12,19 +12,19 @@ cors = CORS(app)
 pool = db.get_session_pool()
 
 
-@app.route('/svg', methods=['GET'])
-def get_svg():
+@app.route('/contents', methods=['GET'])
+def get_contents():
     request_data_json = json.loads(request.data)
     archive = request_data_json['archive']
     fund = request_data_json['fund']
     inventory = request_data_json['inventory']
     value = request_data_json['value']
     page = request_data_json['page']
-    contents = pool.retry_operation_sync(
+    content = pool.retry_operation_sync(
         db.select_contents_content,
         None, archive, fund, inventory, value, page
-    )
-    data = json.loads(contents)
+    )[0]['content']
+    data = json.loads(content)
     text_annotation = data['result']['textAnnotation']
     root = etree.Element(
         'svg',
@@ -36,17 +36,20 @@ def get_svg():
         for line in block['lines']:
             for word in line['words']:
                 vertices = word['boundingBox']['vertices']
+                width = int(vertices[2]['x']) - int(vertices[0]['x'])
+                height = int(vertices[2]['y']) - int(vertices[0]['y'])
                 element = etree.Element(
                     'text',
                     x=vertices[0]['x'],
                     y=vertices[0]['y'],
-                    textLength=str(int(vertices[2]['x']) - int(vertices[0]['x'])),
+                    textLength=str(width),
                     lengthAdjust='spacingAndGlyphs',
-                    style='font-size: {0}'.format(str(int(vertices[2]['y']) - int(vertices[0]['y'])))
+                    style='font-size: {0}'.format(str(height))
                 )
                 element.text = word['text']
                 root.append(element)
-    return Response(etree.tostring(root, pretty_print=True, encoding='utf-8'), mimetype='image/svg+xml')
+    svg_string = etree.tostring(root, pretty_print=True, encoding='utf-8')
+    return Response(svg_string, mimetype='image/svg+xml')
 
 
 if __name__ == '__main__':
