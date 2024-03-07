@@ -8,8 +8,8 @@ import yaml
 from back import db
 
 data_dir = 'data'
-x_folder_id = 'b1ge7l6307kuksqnm13c'
 ocr_key_path = 'api-key.yaml'
+x_folder_id = 'b1ge7l6307kuksqnm13c'
 
 
 def get_api_key(key_file_path):
