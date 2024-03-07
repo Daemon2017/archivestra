@@ -45,50 +45,59 @@ def get_content(content, api_key):
 
 def main():
     api_key = get_api_key(ocr_key_path)
-    driver = db.get_driver()
-    with driver:
-        driver.wait(fail_fast=True, timeout=5)
-        session = driver.table_client.session().create()
-        for archive in os.listdir(os.path.join(data_dir)):
-            for fund in os.listdir(os.path.join(data_dir, archive)):
-                for inventory in os.listdir(os.path.join(data_dir, archive, fund)):
-                    for value in os.listdir(os.path.join(data_dir, archive, fund, inventory)):
-                        print('\nПереключаюсь на архив {0} фонд {1} опись {2} дело {3}...'
-                              .format(archive, fund, inventory, value))
-                        path = os.path.join(data_dir, archive, fund, inventory, value)
-                        print('Выгружаю содержимое файла description.txt...')
-                        if 'description.txt' not in os.listdir(path):
-                            print('ОШИБКА: отсутствует файл description.txt! '
-                                  'Перехожу к следующему делу...')
+    pool = db.get_session_pool()
+    for archive in os.listdir(os.path.join(data_dir)):
+        for fund in os.listdir(os.path.join(data_dir, archive)):
+            for inventory in os.listdir(os.path.join(data_dir, archive, fund)):
+                for value in os.listdir(os.path.join(data_dir, archive, fund, inventory)):
+                    print('\nПереключаюсь на архив {0} фонд {1} опись {2} дело {3}...'
+                          .format(archive, fund, inventory, value))
+                    path = os.path.join(data_dir, archive, fund, inventory, value)
+                    print('Выгружаю содержимое файла description.txt...')
+                    if 'description.txt' not in os.listdir(path):
+                        print('ОШИБКА: отсутствует файл description.txt! '
+                              'Перехожу к следующему делу...')
+                        continue
+                    if pool.retry_operation_sync(
+                            db.select_descriptions_description,
+                            None, archive, fund, inventory, value
+                    ):
+                        print('Содержимое файла description.txt уже загружено в БД! '
+                              'Повторная выгрузка не будет осуществлена.')
+                    else:
+                        description = read_description(path)
+                        pool.retry_operation_sync(
+                            db.upsert_descriptions,
+                            None, archive, fund, inventory, value, description
+                        )
+                        print('Содержимое файла description.txt успешно выгружено.')
+                    print('Распознаю и выгружаю страницы дела...')
+                    contents = pool.retry_operation_sync(
+                        db.select_contents_page,
+                        None, archive, fund, inventory, value
+                    )
+                    filenames = list(filter(lambda f: f.endswith('.jpg') or f.endswith('.png'), os.listdir(path)))
+                    for filename in filenames:
+                        page = os.path.splitext(filename)[0]
+                        if page in [row['page'] for row in contents]:
+                            print('Страница {0} уже распознана и выгружена в БД! '
+                                  'Перехожу к следующей странице...'.format(page))
                             continue
-                        if db.select_descriptions_description(session, archive, fund, inventory, value):
-                            print('Содержимое файла description.txt уже загружено в БД! '
-                                  'Повторная выгрузка не будет осуществлена.')
-                        else:
-                            description = read_description(path)
-                            db.upsert_descriptions(session, archive, fund, inventory, value, description)
-                            print('Содержимое файла description.txt успешно выгружено.')
-                        print('Распознаю и выгружаю страницы дела...')
-                        contents = db.select_contents_page(session, archive, fund, inventory, value)
-                        filenames = list(filter(lambda f: f.endswith('.jpg') or f.endswith('.png'), os.listdir(path)))
-                        for filename in filenames:
-                            page = os.path.splitext(filename)[0]
-                            if page in [row['page'] for row in contents]:
-                                print('Страница {0} уже распознана и выгружена в БД! '
+                        file_path = os.path.join(data_dir, archive, fund, inventory, value, filename)
+                        with open(file_path, 'rb') as image:
+                            content_base64 = base64.b64encode(image.read()).decode()
+                            content = get_content(content_base64, api_key)
+                            content_json = json.loads(content)
+                            if 'error' in content_json:
+                                print('Ошибка в ходе распознавания страницы {0}! '
                                       'Перехожу к следующей странице...'.format(page))
                                 continue
-                            file_path = os.path.join(data_dir, archive, fund, inventory, value, filename)
-                            with open(file_path, 'rb') as image:
-                                content_base64 = base64.b64encode(image.read()).decode()
-                                content = get_content(content_base64, api_key)
-                                content_json = json.loads(content)
-                                if 'error' in content_json:
-                                    print('Ошибка в ходе распознавания страницы {0}! '
-                                          'Перехожу к следующей странице...'.format(page))
-                                    continue
-                                else:
-                                    db.upsert_contents(session, archive, fund, inventory, value, page, content)
-                                    print('Страница {0} успешно выгружена.'.format(page))
+                            else:
+                                pool.retry_operation_sync(
+                                    db.upsert_contents,
+                                    None, archive, fund, inventory, value, page, content
+                                )
+                                print('Страница {0} успешно выгружена.'.format(page))
 
 
 if __name__ == '__main__':

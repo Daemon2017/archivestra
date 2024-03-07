@@ -6,12 +6,15 @@ db_key_path = 'key.json'
 database = '/ru-central1/b1gq47q3820jil5087ik/etn40a53g48m08r3759h'
 
 
-def get_driver():
-    return ydb.Driver(
+def get_session_pool():
+    driver = ydb.Driver(
         endpoint='grpcs://ydb.serverless.yandexcloud.net:2135',
         database=database,
         credentials=ydb.iam.ServiceAccountCredentials.from_file(db_key_path),
     )
+    driver.wait(fail_fast=True, timeout=5)
+    pool = ydb.SessionPool(driver)
+    return pool
 
 
 def upsert_descriptions(session, archive, fund, inventory, value, description):
