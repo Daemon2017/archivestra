@@ -1,5 +1,3 @@
-import uuid
-
 import ydb
 
 db_key_path = 'key.json'
@@ -19,20 +17,18 @@ def get_session_pool():
 
 def upsert_descriptions(session, archive, fund, inventory, value, description):
     query = """
-        DECLARE $id AS Utf8;
         DECLARE $archive AS Utf8;
         DECLARE $fund AS Utf8;
         DECLARE $inventory AS Utf8;
         DECLARE $value AS Utf8;
         DECLARE $description AS Utf8;
-        UPSERT INTO descriptions (id, archive, fund, inventory, value, description) 
-        VALUES ($id, $archive, $fund, $inventory, $value, $description);
-        """.format(uuid.uuid4(), archive, fund, inventory, value, description)
+        UPSERT INTO descriptions (archive, fund, inventory, value, description) 
+        VALUES ($archive, $fund, $inventory, $value, $description);
+        """.format(archive, fund, inventory, value, description)
     prepared_query = session.prepare(query)
     session.transaction().execute(
         prepared_query,
         {
-            '$id': str(uuid.uuid4()),
             '$archive': archive,
             '$fund': fund,
             '$inventory': inventory,
@@ -153,21 +149,19 @@ def select_descriptions_description(session, archive, fund, inventory, value):
 
 def upsert_contents(session, archive, fund, inventory, value, page, content):
     query = """
-        DECLARE $id AS Utf8;
         DECLARE $archive AS Utf8;
         DECLARE $fund AS Utf8;
         DECLARE $inventory AS Utf8;
         DECLARE $value AS Utf8;
-        DECLARE $page AS Utf8;
+        DECLARE $page AS Uint64;
         DECLARE $content AS Utf8;
-        UPSERT INTO contents (id, archive, fund, inventory, value, page, content) 
-        VALUES ($id, $archive, $fund, $inventory, $value, $page, $content);
+        UPSERT INTO contents (archive, fund, inventory, value, page, content) 
+        VALUES ($archive, $fund, $inventory, $value, $page, $content);
         """
     prepared_query = session.prepare(query)
     session.transaction().execute(
         prepared_query,
         {
-            '$id': str(uuid.uuid4()),
             '$archive': archive,
             '$fund': fund,
             '$inventory': inventory,
@@ -294,7 +288,7 @@ def select_contents_content(session, archive, fund, inventory, value, page):
         DECLARE $fund AS Utf8;
         DECLARE $inventory AS Utf8;
         DECLARE $value AS Utf8;
-        DECLARE $page AS Utf8;
+        DECLARE $page AS Uint64;
         SELECT DISTINCT content
         FROM contents
         WHERE archive = $archive

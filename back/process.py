@@ -96,7 +96,7 @@ def main():
                             else:
                                 pool.retry_operation_sync(
                                     db.upsert_contents,
-                                    None, archive, fund, inventory, value, str(page), content
+                                    None, archive, fund, inventory, value, page, content
                                 )
                                 print('Страница {0} успешно выгружена.'.format(page))
 
