@@ -30,9 +30,9 @@ def get_descriptions_fund():
         db.select_descriptions_fund,
         None, rq_json['archive']
     )
-    pages = [row['fund'] for row in response]
-    pages.sort()
-    return Response(json.dumps(pages), mimetype='application/json')
+    funds = [row['fund'] for row in response]
+    funds.sort()
+    return Response(json.dumps(funds), mimetype='application/json')
 
 
 @app.route('/descriptions_inventory', methods=['GET'])
@@ -42,9 +42,9 @@ def get_descriptions_inventory():
         db.select_descriptions_inventory,
         None, rq_json['archive'], rq_json['fund']
     )
-    pages = [row['inventory'] for row in response]
-    pages.sort()
-    return Response(json.dumps(pages), mimetype='application/json')
+    inventories = [row['inventory'] for row in response]
+    inventories.sort()
+    return Response(json.dumps(inventories), mimetype='application/json')
 
 
 @app.route('/descriptions_value', methods=['GET'])
@@ -54,9 +54,9 @@ def get_descriptions_value():
         db.select_descriptions_value,
         None, rq_json['archive'], rq_json['fund'], rq_json['inventory']
     )
-    pages = [row['value'] for row in response]
-    pages.sort()
-    return Response(json.dumps(pages), mimetype='application/json')
+    values = [row['value'] for row in response]
+    values.sort()
+    return Response(json.dumps(values), mimetype='application/json')
 
 
 @app.route('/descriptions_description', methods=['GET'])
@@ -66,9 +66,9 @@ def get_descriptions_description():
         db.select_descriptions_description,
         None, rq_json['archive'], rq_json['fund'], rq_json['inventory'], rq_json['value']
     )
-    pages = [row['description'] for row in response]
-    pages.sort()
-    return Response(json.dumps(pages), mimetype='application/json')
+    descriptions = [row['description'] for row in response]
+    descriptions.sort()
+    return Response(json.dumps(descriptions), mimetype='application/json')
 
 
 @app.route('/contents_archive', methods=['GET'])
