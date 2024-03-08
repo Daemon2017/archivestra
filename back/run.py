@@ -12,6 +12,65 @@ cors = CORS(app)
 pool = db.get_session_pool()
 
 
+@app.route('/descriptions_archive', methods=['GET'])
+def get_descriptions_archive():
+    response = pool.retry_operation_sync(
+        db.select_descriptions_archive,
+        None
+    )
+    pages = [row['archive'] for row in response]
+    pages.sort()
+    return Response(json.dumps(pages), mimetype='application/json')
+
+
+@app.route('/descriptions_fund', methods=['GET'])
+def get_descriptions_fund():
+    rq_json = json.loads(request.data)
+    response = pool.retry_operation_sync(
+        db.select_descriptions_fund,
+        None, rq_json['archive']
+    )
+    pages = [row['fund'] for row in response]
+    pages.sort()
+    return Response(json.dumps(pages), mimetype='application/json')
+
+
+@app.route('/descriptions_inventory', methods=['GET'])
+def get_descriptions_inventory():
+    rq_json = json.loads(request.data)
+    response = pool.retry_operation_sync(
+        db.select_descriptions_inventory,
+        None, rq_json['archive'], rq_json['fund']
+    )
+    pages = [row['inventory'] for row in response]
+    pages.sort()
+    return Response(json.dumps(pages), mimetype='application/json')
+
+
+@app.route('/descriptions_value', methods=['GET'])
+def get_descriptions_value():
+    rq_json = json.loads(request.data)
+    response = pool.retry_operation_sync(
+        db.select_descriptions_value,
+        None, rq_json['archive'], rq_json['fund'], rq_json['inventory']
+    )
+    pages = [row['value'] for row in response]
+    pages.sort()
+    return Response(json.dumps(pages), mimetype='application/json')
+
+
+@app.route('/descriptions_description', methods=['GET'])
+def get_descriptions_description():
+    rq_json = json.loads(request.data)
+    response = pool.retry_operation_sync(
+        db.select_descriptions_description,
+        None, rq_json['archive'], rq_json['fund'], rq_json['inventory'], rq_json['value']
+    )
+    pages = [row['description'] for row in response]
+    pages.sort()
+    return Response(json.dumps(pages), mimetype='application/json')
+
+
 @app.route('/contents_archive', methods=['GET'])
 def get_contents_archive():
     response = pool.retry_operation_sync(

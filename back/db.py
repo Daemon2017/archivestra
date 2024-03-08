@@ -43,7 +43,7 @@ def upsert_descriptions(session, archive, fund, inventory, value, description):
     )
 
 
-def select_descriptions_archives(session):
+def select_descriptions_archive(session):
     query = """
         SELECT DISTINCT archive
         FROM descriptions;
@@ -57,7 +57,7 @@ def select_descriptions_archives(session):
     return result_sets[0].rows
 
 
-def select_descriptions_funds(session, archive):
+def select_descriptions_fund(session, archive):
     query = """
         DECLARE $archive AS Utf8;
         SELECT DISTINCT fund
@@ -75,7 +75,7 @@ def select_descriptions_funds(session, archive):
     return result_sets[0].rows
 
 
-def select_descriptions_inventories(session, archive, fund):
+def select_descriptions_inventory(session, archive, fund):
     query = """
         DECLARE $archive AS Utf8;
         DECLARE $fund AS Utf8;
@@ -96,7 +96,7 @@ def select_descriptions_inventories(session, archive, fund):
     return result_sets[0].rows
 
 
-def select_descriptions_values(session, archive, fund, inventory):
+def select_descriptions_value(session, archive, fund, inventory):
     query = """
         DECLARE $archive AS Utf8;
         DECLARE $fund AS Utf8;
@@ -126,7 +126,7 @@ def select_descriptions_description(session, archive, fund, inventory, value):
         DECLARE $fund AS Utf8;
         DECLARE $inventory AS Utf8;
         DECLARE $value AS Utf8;
-        SELECT description
+        SELECT DISTINCT description
         FROM descriptions
         WHERE archive = $archive
         and fund = $fund
