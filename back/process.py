@@ -77,13 +77,14 @@ def main():
                         None, archive, fund, inventory, value
                     )
                     filenames = list(filter(lambda f: f.endswith('.jpg'), os.listdir(path)))
-                    for filename in filenames:
-                        page = os.path.splitext(filename)[0]
-                        if page in [row['page'] for row in response]:
+                    pages = [int(os.path.splitext(filename)[0]) for filename in filenames]
+                    pages.sort()
+                    for page in pages:
+                        if page in [int(row['page']) for row in response]:
                             print('Страница {0} уже распознана и выгружена в БД! '
                                   'Перехожу к следующей странице...'.format(page))
                             continue
-                        file_path = os.path.join(data_dir, archive, fund, inventory, value, filename)
+                        file_path = os.path.join(data_dir, archive, fund, inventory, value, '{0}.jpg'.format(str(page)))
                         with open(file_path, 'rb') as image:
                             content_base64 = base64.b64encode(image.read()).decode()
                             content = get_content(content_base64, api_key)
@@ -95,7 +96,7 @@ def main():
                             else:
                                 pool.retry_operation_sync(
                                     db.upsert_contents,
-                                    None, archive, fund, inventory, value, page, content
+                                    None, archive, fund, inventory, value, str(page), content
                                 )
                                 print('Страница {0} успешно выгружена.'.format(page))
 
