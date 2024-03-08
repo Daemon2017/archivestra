@@ -46,7 +46,8 @@ def upsert_descriptions(session, archive, fund, inventory, value, description):
 def select_descriptions_archive(session):
     query = """
         SELECT DISTINCT archive
-        FROM descriptions;
+        FROM descriptions
+        ORDER BY archive ASC;
         """
     prepared_query = session.prepare(query)
     result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
@@ -62,7 +63,8 @@ def select_descriptions_fund(session, archive):
         DECLARE $archive AS Utf8;
         SELECT DISTINCT fund
         FROM descriptions
-        WHERE archive = $archive;
+        WHERE archive = $archive
+        ORDER BY fund ASC;
         """
     prepared_query = session.prepare(query)
     result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
@@ -82,7 +84,8 @@ def select_descriptions_inventory(session, archive, fund):
         SELECT DISTINCT inventory
         FROM descriptions
         WHERE archive = $archive
-        and fund = $fund;
+        and fund = $fund
+        ORDER BY inventory ASC;
         """
     prepared_query = session.prepare(query)
     result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
@@ -105,7 +108,8 @@ def select_descriptions_value(session, archive, fund, inventory):
         FROM descriptions
         WHERE archive = $archive
         and fund = $fund
-        and inventory = $inventory;
+        and inventory = $inventory
+        ORDER BY value ASC;
         """
     prepared_query = session.prepare(query)
     result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
@@ -178,7 +182,8 @@ def upsert_contents(session, archive, fund, inventory, value, page, content):
 def select_contents_archive(session):
     query = """
         SELECT DISTINCT archive
-        FROM contents;
+        FROM contents
+        ORDER BY archive ASC;
         """
     prepared_query = session.prepare(query)
     result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
@@ -194,7 +199,8 @@ def select_contents_fund(session, archive):
         DECLARE $archive AS Utf8;
         SELECT DISTINCT fund
         FROM contents
-        WHERE archive = $archive;
+        WHERE archive = $archive
+        ORDER BY fund ASC;
         """
     prepared_query = session.prepare(query)
     result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
@@ -214,7 +220,8 @@ def select_contents_inventory(session, archive, fund):
         SELECT DISTINCT inventory
         FROM contents
         WHERE archive = $archive
-        and fund = $fund;
+        and fund = $fund
+        ORDER BY inventory ASC;
         """
     prepared_query = session.prepare(query)
     result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
@@ -237,7 +244,8 @@ def select_contents_value(session, archive, fund, inventory):
         FROM contents
         WHERE archive = $archive
         and fund = $fund
-        and inventory = $inventory;
+        and inventory = $inventory
+        ORDER BY value ASC;
         """
     prepared_query = session.prepare(query)
     result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
@@ -263,7 +271,8 @@ def select_contents_page(session, archive, fund, inventory, value):
         WHERE archive = $archive
         and fund = $fund
         and inventory = $inventory
-        and value = $value;
+        and value = $value
+        ORDER BY page ASC;
         """
     prepared_query = session.prepare(query)
     result_sets = session.transaction(ydb.SerializableReadWrite()).execute(

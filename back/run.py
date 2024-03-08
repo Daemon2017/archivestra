@@ -19,7 +19,6 @@ def get_descriptions_archive():
         None
     )
     pages = [row['archive'] for row in response]
-    pages.sort()
     return Response(json.dumps(pages), mimetype='application/json')
 
 
@@ -31,7 +30,6 @@ def get_descriptions_fund():
         None, rq_json['archive']
     )
     funds = [row['fund'] for row in response]
-    funds.sort()
     return Response(json.dumps(funds), mimetype='application/json')
 
 
@@ -43,7 +41,6 @@ def get_descriptions_inventory():
         None, rq_json['archive'], rq_json['fund']
     )
     inventories = [row['inventory'] for row in response]
-    inventories.sort()
     return Response(json.dumps(inventories), mimetype='application/json')
 
 
@@ -55,7 +52,6 @@ def get_descriptions_value():
         None, rq_json['archive'], rq_json['fund'], rq_json['inventory']
     )
     values = [row['value'] for row in response]
-    values.sort()
     return Response(json.dumps(values), mimetype='application/json')
 
 
@@ -65,10 +61,8 @@ def get_descriptions_description():
     response = pool.retry_operation_sync(
         db.select_descriptions_description,
         None, rq_json['archive'], rq_json['fund'], rq_json['inventory'], rq_json['value']
-    )
-    descriptions = [row['description'] for row in response]
-    descriptions.sort()
-    return Response(json.dumps(descriptions), mimetype='application/json')
+    )[0]['description']
+    return Response(json.dumps(response), mimetype='application/json')
 
 
 @app.route('/contents_archive', methods=['GET'])
@@ -78,7 +72,6 @@ def get_contents_archive():
         None
     )
     archives = [row['archive'] for row in response]
-    archives.sort()
     return Response(json.dumps(archives), mimetype='application/json')
 
 
@@ -90,7 +83,6 @@ def get_contents_fund():
         None, rq_json['archive']
     )
     funds = [row['fund'] for row in response]
-    funds.sort()
     return Response(json.dumps(funds), mimetype='application/json')
 
 
@@ -102,7 +94,6 @@ def get_contents_inventory():
         None, rq_json['archive'], rq_json['fund']
     )
     inventories = [row['inventory'] for row in response]
-    inventories.sort()
     return Response(json.dumps(inventories), mimetype='application/json')
 
 
@@ -114,7 +105,6 @@ def get_contents_value():
         None, rq_json['archive'], rq_json['fund'], rq_json['inventory']
     )
     values = [row['value'] for row in response]
-    values.sort()
     return Response(json.dumps(values), mimetype='application/json')
 
 
@@ -126,7 +116,6 @@ def get_contents_page():
         None, rq_json['archive'], rq_json['fund'], rq_json['inventory'], rq_json['value']
     )
     pages = [int(row['page']) for row in response]
-    pages.sort()
     return Response(json.dumps(pages), mimetype='application/json')
 
 
