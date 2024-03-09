@@ -65,6 +65,16 @@ def get_descriptions_description():
     return Response(json.dumps(response), mimetype='application/json')
 
 
+@app.route('/descriptions', methods=['GET'])
+def get_descriptions():
+    rq_json = json.loads(request.data)
+    response = pool.retry_operation_sync(
+        db.select_descriptions,
+        None, '%{0}%'.format(rq_json['description'])
+    )
+    return Response(json.dumps(response), mimetype='application/json')
+
+
 @app.route('/contents_archive', methods=['GET'])
 def get_contents_archive():
     response = pool.retry_operation_sync(
@@ -162,6 +172,16 @@ def get_contents_content():
                 root.append(element)
     svg_string = etree.tostring(root, pretty_print=True, encoding='utf-8')
     return Response(svg_string, mimetype='image/svg+xml')
+
+
+@app.route('/contents', methods=['GET'])
+def get_contents():
+    rq_json = json.loads(request.data)
+    response = pool.retry_operation_sync(
+        db.select_contents,
+        None, '%{0}%'.format(rq_json['short'])
+    )
+    return Response(json.dumps(response), mimetype='application/json')
 
 
 if __name__ == '__main__':

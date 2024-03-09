@@ -147,6 +147,24 @@ def select_descriptions_description(session, archive, fund, inventory, value):
     return result_sets[0].rows
 
 
+def select_descriptions(session, description):
+    query = f"""
+        DECLARE $description AS Utf8;
+        SELECT archive, fund, inventory, value, description
+        FROM descriptions
+        WHERE description ILIKE $description;
+        """
+    prepared_query = session.prepare(query)
+    result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
+        prepared_query,
+        {
+            '$description': description
+        },
+        commit_tx=True,
+    )
+    return result_sets[0].rows
+
+
 def upsert_contents(session, archive, fund, inventory, value, page, short, content):
     query = """
         DECLARE $archive AS Utf8;
@@ -338,6 +356,24 @@ def select_contents_content(session, archive, fund, inventory, value, page):
             '$inventory': inventory,
             '$value': value,
             '$page': page,
+        },
+        commit_tx=True,
+    )
+    return result_sets[0].rows
+
+
+def select_contents(session, short):
+    query = f"""
+        DECLARE $short AS Utf8;
+        SELECT archive, fund, inventory, value, page, short
+        FROM contents
+        WHERE short ILIKE $short;
+        """
+    prepared_query = session.prepare(query)
+    result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
+        prepared_query,
+        {
+            '$short': short
         },
         commit_tx=True,
     )

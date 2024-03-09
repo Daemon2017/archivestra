@@ -9,6 +9,37 @@
 			"name": "contents",
 			"item": [
 				{
+					"name": "contents",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"short\": \"Дело\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/contents",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"contents"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "contents_content",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -230,6 +261,37 @@
 		{
 			"name": "descriptions",
 			"item": [
+				{
+					"name": "descriptions",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Указатель\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/descriptions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"descriptions"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "descriptions_description",
 					"protocolProfileBehavior": {
