@@ -119,6 +119,16 @@ def get_contents_page():
     return Response(json.dumps(pages), mimetype='application/json')
 
 
+@app.route('/contents_short', methods=['GET'])
+def get_contents_short():
+    rq_json = json.loads(request.data)
+    response = pool.retry_operation_sync(
+        db.select_contents_short,
+        None, rq_json['archive'], rq_json['fund'], rq_json['inventory'], rq_json['value'], rq_json['page']
+    )[0]['short']
+    return Response(json.dumps(response), mimetype='application/json')
+
+
 @app.route('/contents_content', methods=['GET'])
 def get_contents_content():
     rq_json = json.loads(request.data)

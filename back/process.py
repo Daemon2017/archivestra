@@ -94,9 +94,10 @@ def main():
                                       'Перехожу к следующей странице...'.format(page))
                                 continue
                             else:
+                                short = content_json['result']['textAnnotation']['fullText'].replace('\n', ' ')
                                 pool.retry_operation_sync(
                                     db.upsert_contents,
-                                    None, archive, fund, inventory, value, page, content
+                                    None, archive, fund, inventory, value, page, short, content
                                 )
                                 print('Страница {0} успешно выгружена.'.format(page))
 

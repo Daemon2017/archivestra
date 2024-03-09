@@ -147,16 +147,17 @@ def select_descriptions_description(session, archive, fund, inventory, value):
     return result_sets[0].rows
 
 
-def upsert_contents(session, archive, fund, inventory, value, page, content):
+def upsert_contents(session, archive, fund, inventory, value, page, short, content):
     query = """
         DECLARE $archive AS Utf8;
         DECLARE $fund AS Utf8;
         DECLARE $inventory AS Utf8;
         DECLARE $value AS Utf8;
         DECLARE $page AS Uint64;
+        DECLARE $short AS Utf8;
         DECLARE $content AS Utf8;
-        UPSERT INTO contents (archive, fund, inventory, value, page, content) 
-        VALUES ($archive, $fund, $inventory, $value, $page, $content);
+        UPSERT INTO contents (archive, fund, inventory, value, page, short, content) 
+        VALUES ($archive, $fund, $inventory, $value, $page, $short, $content);
         """
     prepared_query = session.prepare(query)
     session.transaction().execute(
@@ -167,6 +168,7 @@ def upsert_contents(session, archive, fund, inventory, value, page, content):
             '$inventory': inventory,
             '$value': value,
             '$page': page,
+            '$short': short,
             '$content': content,
         },
         commit_tx=True,
@@ -276,6 +278,36 @@ def select_contents_page(session, archive, fund, inventory, value):
             '$fund': fund,
             '$inventory': inventory,
             '$value': value,
+        },
+        commit_tx=True,
+    )
+    return result_sets[0].rows
+
+
+def select_contents_short(session, archive, fund, inventory, value, page):
+    query = f"""
+        DECLARE $archive AS Utf8;
+        DECLARE $fund AS Utf8;
+        DECLARE $inventory AS Utf8;
+        DECLARE $value AS Utf8;
+        DECLARE $page AS Uint64;
+        SELECT DISTINCT short
+        FROM contents
+        WHERE archive = $archive
+        and fund = $fund
+        and inventory = $inventory
+        and value = $value
+        and page = $page;
+        """
+    prepared_query = session.prepare(query)
+    result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
+        prepared_query,
+        {
+            '$archive': archive,
+            '$fund': fund,
+            '$inventory': inventory,
+            '$value': value,
+            '$page': page,
         },
         commit_tx=True,
     )

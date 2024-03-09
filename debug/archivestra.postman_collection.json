@@ -40,6 +40,37 @@
 					"response": []
 				},
 				{
+					"name": "contents_short",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"archive\": \"ГАУО\",\r\n    \"fund\": \"970\",\r\n    \"inventory\": \"1\",\r\n    \"value\": \"0\",\r\n    \"page\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/contents_short",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"contents_short"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "contents_page",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
