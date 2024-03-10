@@ -5,7 +5,7 @@ import os
 import requests
 import yaml
 
-from back import db
+import db
 
 data_dir = 'data'
 ocr_key_path = 'api-key.yaml'

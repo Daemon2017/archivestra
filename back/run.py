@@ -5,7 +5,7 @@ from flask_cors import CORS
 from lxml import etree
 from waitress import serve
 
-from back import db
+import db
 
 app = Flask(__name__)
 cors = CORS(app)
