@@ -1,5 +1,6 @@
 import json
 
+import pandas as pd
 from flask import Flask, request, Response
 from flask_cors import CORS
 from lxml import etree
@@ -72,7 +73,19 @@ def get_descriptions():
         db.select_descriptions,
         None, '%{0}%'.format(rq_json['description'])
     )
-    return Response(json.dumps(response), mimetype='application/json')
+    response_json = json.dumps(response)
+    df = pd.read_json(response_json)
+    df.rename(
+        columns=
+        {
+            'archive': 'Архив',
+            'fund': 'Фонд',
+            'inventory': 'Опись',
+            'value': 'Дело',
+            'description': 'Заголовок',
+        },
+        inplace=True)
+    return Response(df.to_csv(sep=',', index=False, header=True), mimetype='text/csv')
 
 
 @app.route('/contents_archive', methods=['POST'])
@@ -181,7 +194,20 @@ def get_contents():
         db.select_contents,
         None, '%{0}%'.format(rq_json['short'])
     )
-    return Response(json.dumps(response), mimetype='application/json')
+    response_json = json.dumps(response)
+    df = pd.read_json(response_json)
+    df.rename(
+        columns=
+        {
+            'archive': 'Архив',
+            'fund': 'Фонд',
+            'inventory': 'Опись',
+            'value': 'Дело',
+            'page': 'Страница',
+            'short': 'Содержание'
+        },
+        inplace=True)
+    return Response(df.to_csv(sep=',', index=False, header=True), mimetype='text/csv')
 
 
 if __name__ == '__main__':
