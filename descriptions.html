@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="#" />
+
+    <title>archivestra</title>
+
+    <script src="js/descriptions.js"></script>
+
+    <script defer src="js/csv.min.js"></script>
+
+    <style>
+        .column {
+            float: left;
+            width: 50%;
+        }
+
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .center {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body onload="getArchives()">
+    <form style="width: 66%">
+        <div class="center">
+            <h2>archivestra</h2>
+        </div>
+        <div class="row">
+            <div class="column center">
+                <a href="./descriptions.html" style="font-weight:bold">Поиск по заголовкам</a>
+            </div>
+            <div class="column center">
+                <a href="./contents.html">Поиск по содержимому</a>
+            </div>
+        </div>
+        <div class="row">
+            <label for="requestID">Фраза для поиска: </label>
+        </div>
+        <div>
+            <textarea id="requestID" rows="1" wrap="off" style="width: 100%;"></textarea>
+        </div>
+        <div>
+            <input type="button" onClick="searchDescriptions()" value="Искать" style="width: 100%" />
+        </div>
+        <div class="row">
+            <label for="resultsID">Результаты: </label>
+        </div>
+        <div class="row">
+            <table id="resultsID"></table>
+        </div>
+        <div class="row">
+            <label>Навигация: </label>
+        </div>
+        <div class="row center">
+            <label for="archiveID">Архив: </label>
+            <select id="archiveID" onChange="getFunds()">
+            </select>
+            <label for="fundID">Фонд: </label>
+            <select id="fundID" onChange="getInventories()">
+            </select>
+            <label for="inventoryID">Опись: </label>
+            <select id="inventoryID" onChange="getValues()">
+            </select>
+            <label for="valueID">Дело: </label>
+            <select id="valueID" onChange="getDescription()">
+            </select>
+        </div>
+        <div class="row">
+            <label for="descriptionID">Заголовок дела: </label>
+        </div>
+        <div>
+            <textarea id="descriptionID" rows="3" wrap="off" style="width: 100%;" disabled></textarea>
+        </div>
+    </form>
+</body>
+
+</html>
