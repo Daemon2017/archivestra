@@ -12,7 +12,7 @@ cors = CORS(app)
 pool = db.get_session_pool()
 
 
-@app.route('/descriptions_archive', methods=['GET'])
+@app.route('/descriptions_archive', methods=['POST'])
 def get_descriptions_archive():
     response = pool.retry_operation_sync(
         db.select_descriptions_archive,
@@ -22,9 +22,9 @@ def get_descriptions_archive():
     return Response(json.dumps(pages), mimetype='application/json')
 
 
-@app.route('/descriptions_fund', methods=['GET'])
+@app.route('/descriptions_fund', methods=['POST'])
 def get_descriptions_fund():
-    rq_json = json.loads(request.data)
+    rq_json = request.json
     response = pool.retry_operation_sync(
         db.select_descriptions_fund,
         None, rq_json['archive']
@@ -33,9 +33,9 @@ def get_descriptions_fund():
     return Response(json.dumps(funds), mimetype='application/json')
 
 
-@app.route('/descriptions_inventory', methods=['GET'])
+@app.route('/descriptions_inventory', methods=['POST'])
 def get_descriptions_inventory():
-    rq_json = json.loads(request.data)
+    rq_json = request.json
     response = pool.retry_operation_sync(
         db.select_descriptions_inventory,
         None, rq_json['archive'], rq_json['fund']
@@ -44,9 +44,9 @@ def get_descriptions_inventory():
     return Response(json.dumps(inventories), mimetype='application/json')
 
 
-@app.route('/descriptions_value', methods=['GET'])
+@app.route('/descriptions_value', methods=['POST'])
 def get_descriptions_value():
-    rq_json = json.loads(request.data)
+    rq_json = request.json
     response = pool.retry_operation_sync(
         db.select_descriptions_value,
         None, rq_json['archive'], rq_json['fund'], rq_json['inventory']
@@ -55,9 +55,9 @@ def get_descriptions_value():
     return Response(json.dumps(values), mimetype='application/json')
 
 
-@app.route('/descriptions_description', methods=['GET'])
+@app.route('/descriptions_description', methods=['POST'])
 def get_descriptions_description():
-    rq_json = json.loads(request.data)
+    rq_json = request.json
     response = pool.retry_operation_sync(
         db.select_descriptions_description,
         None, rq_json['archive'], rq_json['fund'], rq_json['inventory'], rq_json['value']
@@ -65,9 +65,9 @@ def get_descriptions_description():
     return Response(json.dumps(response), mimetype='application/json')
 
 
-@app.route('/descriptions', methods=['GET'])
+@app.route('/descriptions', methods=['POST'])
 def get_descriptions():
-    rq_json = json.loads(request.data)
+    rq_json = request.json
     response = pool.retry_operation_sync(
         db.select_descriptions,
         None, '%{0}%'.format(rq_json['description'])
@@ -75,7 +75,7 @@ def get_descriptions():
     return Response(json.dumps(response), mimetype='application/json')
 
 
-@app.route('/contents_archive', methods=['GET'])
+@app.route('/contents_archive', methods=['POST'])
 def get_contents_archive():
     response = pool.retry_operation_sync(
         db.select_contents_archive,
@@ -85,9 +85,9 @@ def get_contents_archive():
     return Response(json.dumps(archives), mimetype='application/json')
 
 
-@app.route('/contents_fund', methods=['GET'])
+@app.route('/contents_fund', methods=['POST'])
 def get_contents_fund():
-    rq_json = json.loads(request.data)
+    rq_json = request.json
     response = pool.retry_operation_sync(
         db.select_contents_fund,
         None, rq_json['archive']
@@ -96,9 +96,9 @@ def get_contents_fund():
     return Response(json.dumps(funds), mimetype='application/json')
 
 
-@app.route('/contents_inventory', methods=['GET'])
+@app.route('/contents_inventory', methods=['POST'])
 def get_contents_inventory():
-    rq_json = json.loads(request.data)
+    rq_json = request.json
     response = pool.retry_operation_sync(
         db.select_contents_inventory,
         None, rq_json['archive'], rq_json['fund']
@@ -107,9 +107,9 @@ def get_contents_inventory():
     return Response(json.dumps(inventories), mimetype='application/json')
 
 
-@app.route('/contents_value', methods=['GET'])
+@app.route('/contents_value', methods=['POST'])
 def get_contents_value():
-    rq_json = json.loads(request.data)
+    rq_json = request.json
     response = pool.retry_operation_sync(
         db.select_contents_value,
         None, rq_json['archive'], rq_json['fund'], rq_json['inventory']
@@ -118,9 +118,9 @@ def get_contents_value():
     return Response(json.dumps(values), mimetype='application/json')
 
 
-@app.route('/contents_page', methods=['GET'])
+@app.route('/contents_page', methods=['POST'])
 def get_contents_page():
-    rq_json = json.loads(request.data)
+    rq_json = request.json
     response = pool.retry_operation_sync(
         db.select_contents_page,
         None, rq_json['archive'], rq_json['fund'], rq_json['inventory'], rq_json['value']
@@ -129,9 +129,9 @@ def get_contents_page():
     return Response(json.dumps(pages), mimetype='application/json')
 
 
-@app.route('/contents_short', methods=['GET'])
+@app.route('/contents_short', methods=['POST'])
 def get_contents_short():
-    rq_json = json.loads(request.data)
+    rq_json = request.json
     response = pool.retry_operation_sync(
         db.select_contents_short,
         None, rq_json['archive'], rq_json['fund'], rq_json['inventory'], rq_json['value'], rq_json['page']
@@ -139,9 +139,9 @@ def get_contents_short():
     return Response(json.dumps(response), mimetype='application/json')
 
 
-@app.route('/contents_content', methods=['GET'])
+@app.route('/contents_content', methods=['POST'])
 def get_contents_content():
-    rq_json = json.loads(request.data)
+    rq_json = request.json
     response = pool.retry_operation_sync(
         db.select_contents_content,
         None, rq_json['archive'], rq_json['fund'], rq_json['inventory'], rq_json['value'], rq_json['page']
@@ -174,9 +174,9 @@ def get_contents_content():
     return Response(svg_string, mimetype='image/svg+xml')
 
 
-@app.route('/contents', methods=['GET'])
+@app.route('/contents', methods=['POST'])
 def get_contents():
-    rq_json = json.loads(request.data)
+    rq_json = request.json
     response = pool.retry_operation_sync(
         db.select_contents,
         None, '%{0}%'.format(rq_json['short'])
