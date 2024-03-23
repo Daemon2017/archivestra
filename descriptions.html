@@ -32,7 +32,7 @@
 <body onload="getArchives()">
     <form style="width: 66%">
         <div class="center">
-            <h2>archivestra</h2>
+            <h1>archivestra</h1>
         </div>
         <div class="row">
             <div class="column center">
@@ -42,11 +42,20 @@
                 <a href="./contents.html">Поиск по содержимому</a>
             </div>
         </div>
+        <div class="center">
+            <h3>Поиск</h3>
+        </div>
         <div class="row">
             <label for="requestID">Фраза для поиска: </label>
         </div>
         <div>
             <textarea id="requestID" rows="1" wrap="off" style="width: 100%;"></textarea>
+        </div>
+        <div class="row">
+            <label>Фильтры: </label>
+        </div>
+        <div class="center">
+            <label>(В разработке)</label>
         </div>
         <div>
             <input type="button" onClick="searchDescriptions()" value="Искать" style="width: 100%" />
@@ -56,6 +65,9 @@
         </div>
         <div class="row">
             <table id="resultsID"></table>
+        </div>
+        <div class="center">
+            <h3>Просмотр</h3>
         </div>
         <div class="row">
             <label>Навигация: </label>
