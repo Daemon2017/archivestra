@@ -152,7 +152,8 @@ def select_descriptions(session, description):
         DECLARE $description AS Utf8;
         SELECT archive, fund, inventory, value, description
         FROM descriptions
-        WHERE description ILIKE $description;
+        WHERE description ILIKE $description
+        ORDER BY archive ASC, fund ASC, inventory ASC, value ASC, description ASC;
         """
     prepared_query = session.prepare(query)
     result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
