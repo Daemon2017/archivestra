@@ -30,68 +30,72 @@
 </head>
 
 <body>
-    <form style="width: 66%">
+    <form style="width: 66%;">
         <div class="center">
             <h1>archivestra</h1>
         </div>
         <div class="row">
             <div class="column center">
-                <a href="./descriptions.html" style="font-weight:bold">Поиск по заголовкам</a>
+                <a href="./descriptions.html" style="font-weight:bold;">Поиск по заголовкам</a>
             </div>
             <div class="column center">
                 <a href="./contents.html">Поиск по содержимому</a>
             </div>
         </div>
-        <div class="center">
-            <h3>Поиск</h3>
+        <div style="border-style: ridge;">
+            <div class="center">
+                <h3>Поиск</h3>
+            </div>
+            <div class="row">
+                <label for="requestID">Фраза для поиска: </label>
+            </div>
+            <div>
+                <textarea id="requestID" rows="1" wrap="off" style="width: 99%;"></textarea>
+            </div>
+            <div class="row">
+                <label>Фильтры: </label>
+            </div>
+            <div class="center">
+                <label>(В разработке)</label>
+            </div>
+            <div>
+                <input type="button" onClick="searchDescriptions()" value="Искать" style="width: 99%;" />
+            </div>
+            <div class="row">
+                <label for="resultsID">Результаты: </label>
+            </div>
+            <div class="row">
+                <table id="resultsID"></table>
+            </div>
         </div>
-        <div class="row">
-            <label for="requestID">Фраза для поиска: </label>
-        </div>
-        <div>
-            <textarea id="requestID" rows="1" wrap="off" style="width: 100%;"></textarea>
-        </div>
-        <div class="row">
-            <label>Фильтры: </label>
-        </div>
-        <div class="center">
-            <label>(В разработке)</label>
-        </div>
-        <div>
-            <input type="button" onClick="searchDescriptions()" value="Искать" style="width: 100%" />
-        </div>
-        <div class="row">
-            <label for="resultsID">Результаты: </label>
-        </div>
-        <div class="row">
-            <table id="resultsID"></table>
-        </div>
-        <div class="center">
-            <h3>Просмотр</h3>
-        </div>
-        <div class="row">
-            <label>Навигация: </label>
-        </div>
-        <div class="row center">
-            <label for="archiveID">Архив: </label>
-            <select id="archiveID" onClick="getArchives()" onChange="setArchive()">
-            </select>
-            <label for="fundID">Фонд: </label>
-            <select id="fundID" onClick="getFunds()" onChange="setFund()" disabled>
-            </select>
-            <label for="inventoryID">Опись: </label>
-            <select id="inventoryID" onClick="getInventories()" onChange="setInventory()" disabled>
-            </select>
-            <label for="valueID">Дело: </label>
-            <select id="valueID" onClick="getValues()" onChange="setValue()" disabled>
-            </select>
-            <input id="receiveID" type="button" onClick="getDescription()" value="Загрузить" disabled/>
-        </div>
-        <div class="row">
-            <label for="descriptionID">Заголовок дела: </label>
-        </div>
-        <div>
-            <textarea id="descriptionID" rows="3" wrap="off" style="width: 100%;" disabled></textarea>
+        <div style="border-style: ridge;">
+            <div class="center">
+                <h3>Просмотр</h3>
+            </div>
+            <div class="row">
+                <label>Навигация: </label>
+            </div>
+            <div class="row center">
+                <label for="archiveID">Архив: </label>
+                <select id="archiveID" onClick="getArchives()" onChange="setArchive()">
+                </select>
+                <label for="fundID">Фонд: </label>
+                <select id="fundID" onClick="getFunds()" onChange="setFund()" disabled>
+                </select>
+                <label for="inventoryID">Опись: </label>
+                <select id="inventoryID" onClick="getInventories()" onChange="setInventory()" disabled>
+                </select>
+                <label for="valueID">Дело: </label>
+                <select id="valueID" onClick="getValues()" onChange="setValue()" disabled>
+                </select>
+                <input id="receiveID" type="button" onClick="getDescription()" value="Загрузить" disabled/>
+            </div>
+            <div class="row">
+                <label for="descriptionID">Заголовок дела: </label>
+            </div>
+            <div>
+                <textarea id="descriptionID" rows="3" wrap="off" style="width: 99%;" disabled></textarea>
+            </div>
         </div>
     </form>
 </body>
