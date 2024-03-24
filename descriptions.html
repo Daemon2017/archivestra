@@ -29,7 +29,7 @@
     </style>
 </head>
 
-<body onload="getArchives()">
+<body>
     <form style="width: 66%">
         <div class="center">
             <h1>archivestra</h1>
@@ -74,17 +74,18 @@
         </div>
         <div class="row center">
             <label for="archiveID">Архив: </label>
-            <select id="archiveID" onChange="getFunds()">
+            <select id="archiveID" onClick="getArchives()" onChange="setArchive()">
             </select>
             <label for="fundID">Фонд: </label>
-            <select id="fundID" onChange="getInventories()">
+            <select id="fundID" onClick="getFunds()" onChange="setFund()" disabled>
             </select>
             <label for="inventoryID">Опись: </label>
-            <select id="inventoryID" onChange="getValues()">
+            <select id="inventoryID" onClick="getInventories()" onChange="setInventory()" disabled>
             </select>
             <label for="valueID">Дело: </label>
-            <select id="valueID" onChange="getDescription()">
+            <select id="valueID" onClick="getValues()" onChange="setValue()" disabled>
             </select>
+            <input id="receiveID" type="button" onClick="getDescription()" value="Загрузить" disabled/>
         </div>
         <div class="row">
             <label for="descriptionID">Заголовок дела: </label>
