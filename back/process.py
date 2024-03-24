@@ -22,7 +22,7 @@ def get_api_key(key_file_path):
 def read_description(path):
     with open(os.path.join(path, 'description.txt'), mode='r', encoding='utf-8') as file:
         description = file.read()
-        return description[:64]
+        return description[:128]
 
 
 def get_content(content, api_key):
