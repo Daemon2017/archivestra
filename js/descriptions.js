@@ -2,6 +2,7 @@ let isArchivesLoaded = false
 let isFundsLoaded = false
 let isInventoriesLoaded = false
 let isValuesLoaded = false
+let selectedPage = 0
 
 function getArchives() {
     if (!isArchivesLoaded) {
@@ -47,8 +48,6 @@ function setArchive() {
     values.disabled = true;
     var description = document.getElementById('descriptionID');
     description.value = "";
-    var receive = document.getElementById('receiveID');
-    receive.disabled = true;
     isFundsLoaded = false;
     isInventoriesLoaded = false;
     isValuesLoaded = false;
@@ -99,8 +98,6 @@ function setFund() {
     values.disabled = true;
     var description = document.getElementById('descriptionID');
     description.value = "";
-    var receive = document.getElementById('receiveID');
-    receive.disabled = true;
     isInventoriesLoaded = false;
     isValuesLoaded = false;
 }
@@ -148,8 +145,6 @@ function setInventory() {
     }
     var description = document.getElementById('descriptionID');
     description.value = "";
-    var receive = document.getElementById('receiveID');
-    receive.disabled = true;
     isValuesLoaded = false;
 }
 
@@ -190,17 +185,8 @@ function getValues() {
 }
 
 function setValue() {
-    var receive = document.getElementById('receiveID');
-    if (document.getElementById("valueID").selectedIndex != 0) {
-        receive.disabled = false;
-    } else {
-        receive.disabled = true;
-    }
     var description = document.getElementById('descriptionID');
     description.value = "";
-}
-
-function getDescription() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
@@ -210,7 +196,7 @@ function getDescription() {
         }
     }
     xhr.responseType = "json";
-    xhr.open("POST", "https://bba2usld8315kgujg51n.containers.yandexcloud.net/descriptions_description");
+    xhr.open("POST", "http://localhost:8080/descriptions_description");
     xhr.setRequestHeader("Content-Type", "application/json");
     var object = new Object();
     object.archive = document.getElementById("archiveID").value;
@@ -225,15 +211,58 @@ function searchDescriptions() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            var result = new TextDecoder().decode(this.response)
+            var result = JSON.parse(new TextDecoder().decode(this.response));
             var table = document.getElementById("resultsID");
             table.innerHTML = "";
-            for (let row of CSV.parse(result)) {
+            for (let row of CSV.parse(result.body)) {
                 let tr = table.insertRow();
                 for (let col of row) {
                     let td = tr.insertCell();
                     td.innerHTML = col;
                 }
+            }
+            var pages = document.getElementById("pagesID");
+            pages.innerHTML = "";
+            for (let i = 1; i <= result.pages; i++) {
+                var opt = document.createElement('option');
+                opt.innerHTML = i;
+                pages.appendChild(opt);
+            }
+            selectedPage = 1;
+        }
+    }
+    xhr.responseType = "arraybuffer";
+    xhr.open("POST", "https://bba2usld8315kgujg51n.containers.yandexcloud.net/descriptions");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    var object = new Object();
+    object.description = document.getElementById("requestID").value;
+    var json = JSON.stringify(object);
+    xhr.send(json);
+}
+
+function setPage() {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var result = JSON.parse(new TextDecoder().decode(this.response));
+            var table = document.getElementById("resultsID");
+            table.innerHTML = "";
+            for (let row of CSV.parse(result.body)) {
+                let tr = table.insertRow();
+                for (let col of row) {
+                    let td = tr.insertCell();
+                    td.innerHTML = col;
+                }
+            }
+            var pages = document.getElementById("pagesID");
+            pages.innerHTML = "";
+            for (let i = 1; i <= result.pages; i++) {
+                var opt = document.createElement('option');
+                opt.innerHTML = i;
+                if (i == selectedPage) {
+                    opt.selected = true;
+                }
+                pages.appendChild(opt);
             }
         }
     }
@@ -242,6 +271,8 @@ function searchDescriptions() {
     xhr.setRequestHeader("Content-Type", "application/json");
     var object = new Object();
     object.description = document.getElementById("requestID").value;
+    object.page = document.getElementById("pagesID").value;
+    selectedPage = document.getElementById("pagesID").value;
     var json = JSON.stringify(object);
     xhr.send(json);
 }

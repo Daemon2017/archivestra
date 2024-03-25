@@ -1,4 +1,5 @@
 import json
+from math import ceil
 
 import pandas as pd
 from flask import Flask, request, Response
@@ -75,6 +76,13 @@ def get_descriptions():
     )
     response_json = json.dumps(response)
     df = pd.read_json(response_json)
+    pages = ceil(len(df) / 10)
+    page = 1
+    if 'page' in rq_json and rq_json['page'] != '':
+        page = int(rq_json['page'])
+    from_row = (page - 1) * 10
+    to_row = page * 10
+    df = df[from_row:to_row]
     df.rename(
         columns=
         {
@@ -84,8 +92,14 @@ def get_descriptions():
             'value': 'Дело',
             'description': 'Заголовок',
         },
-        inplace=True)
-    return Response(df.to_csv(sep=',', index=False, header=True), mimetype='text/csv')
+        inplace=True
+    )
+    csv = df.to_csv(sep=',', index=False, header=True)
+    response = {
+        'body': csv,
+        'pages': pages
+    }
+    return Response(json.dumps(response), mimetype='application/json')
 
 
 @app.route('/contents_archive', methods=['POST'])

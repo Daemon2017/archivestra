@@ -244,7 +244,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"Указатель\"\r\n}",
+							"raw": "{\r\n    \"description\": \"Указатель\",\r\n    \"page\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

@@ -48,7 +48,7 @@
             </div>
             <div class="row">
                 <label for="requestID">Фраза для поиска: </label>
-                <textarea id="requestID" rows="1" wrap="off" style="width: 100%;"></textarea>
+                <input id="requestID" style="width: 100%;">
             </div>
             <div class="row">
                 <label>Фильтры: </label>
@@ -57,7 +57,7 @@
                 <label>(В разработке)</label>
             </div>
             <div>
-                <input type="button" onClick="searchDescriptions()" value="Искать" style="width: 100%;" />
+                <button type="button" onClick="searchDescriptions()" style="width: 100%;">Искать</button>
             </div>
             <div class="row">
                 <label for="resultsID">Результаты: </label>
@@ -65,7 +65,7 @@
             </div>
             <div class="row center">
                 <label for="pagesID">Страница: </label>
-                <select id="pagesID" onClick="getPages()" onChange="setPage()"></select>
+                <select id="pagesID" onChange="setPage()"></select>
             </div>
         </div>
         <div style="border-style: ridge;">
@@ -84,7 +84,6 @@
                 <select id="inventoryID" onClick="getInventories()" onChange="setInventory()" disabled></select>
                 <label for="valueID">Дело: </label>
                 <select id="valueID" onClick="getValues()" onChange="setValue()" disabled></select>
-                <input id="receiveID" type="button" onClick="getDescription()" value="Загрузить" disabled/>
             </div>
             <div class="row">
                 <label for="descriptionID">Заголовок дела: </label>
