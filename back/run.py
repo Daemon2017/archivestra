@@ -219,6 +219,13 @@ def get_contents():
     )
     response_json = json.dumps(response)
     df = pd.read_json(response_json)
+    pages = ceil(len(df) / 10)
+    page = 1
+    if 'page' in rq_json and rq_json['page'] != '':
+        page = int(rq_json['page'])
+    from_row = (page - 1) * 10
+    to_row = page * 10
+    df = df[from_row:to_row]
     df.rename(
         columns=
         {
@@ -229,8 +236,14 @@ def get_contents():
             'page': 'Страница',
             'short': 'Содержание'
         },
-        inplace=True)
-    return Response(df.to_csv(sep=',', index=False, header=True), mimetype='text/csv')
+        inplace=True
+    )
+    csv = df.to_csv(sep=',', index=False, header=True)
+    response = {
+        'body': csv,
+        'pages': pages
+    }
+    return Response(json.dumps(response), mimetype='application/json')
 
 
 def get_json_value(rq_json, key):
