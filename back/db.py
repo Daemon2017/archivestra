@@ -147,19 +147,32 @@ def select_descriptions_description(session, archive, fund, inventory, value):
     return result_sets[0].rows
 
 
-def select_descriptions(session, description):
+def select_descriptions(session, description, archive, fund, inventory):
+    where_query = 'WHERE description ILIKE $description\n'
+    if archive != '':
+        where_query += 'AND archive = $archive\n'
+        if fund != '':
+            where_query += 'AND fund = $fund\n'
+            if inventory != '':
+                where_query += 'AND inventory = $inventory\n'
     query = f"""
         DECLARE $description AS Utf8;
+        DECLARE $archive AS Utf8;
+        DECLARE $fund AS Utf8;
+        DECLARE $inventory AS Utf8;
         SELECT archive, fund, inventory, value, description
         FROM descriptions
-        WHERE description ILIKE $description
+        {where_query}
         ORDER BY archive ASC, fund ASC, inventory ASC, value ASC, description ASC;
         """
     prepared_query = session.prepare(query)
     result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
         prepared_query,
         {
-            '$description': description
+            '$description': description,
+            '$archive': archive,
+            '$fund': fund,
+            '$inventory': inventory,
         },
         commit_tx=True,
     )
@@ -363,18 +376,36 @@ def select_contents_content(session, archive, fund, inventory, value, page):
     return result_sets[0].rows
 
 
-def select_contents(session, short):
+def select_contents(session, short, archive, fund, inventory, value):
+    where_query = 'WHERE short ILIKE $short\n'
+    if archive != '':
+        where_query += 'AND archive = $archive\n'
+        if fund != '':
+            where_query += 'AND fund = $fund\n'
+            if inventory != '':
+                where_query += 'AND inventory = $inventory\n'
+                if value != '':
+                    where_query += 'AND value = $value\n'
     query = f"""
         DECLARE $short AS Utf8;
+        DECLARE $archive AS Utf8;
+        DECLARE $fund AS Utf8;
+        DECLARE $inventory AS Utf8;
+        DECLARE $value AS Utf8;
         SELECT archive, fund, inventory, value, page, short
         FROM contents
-        WHERE short ILIKE $short;
+        {where_query}
+        ORDER BY archive ASC, fund ASC, inventory ASC, value ASC, page ASC, short ASC;
         """
     prepared_query = session.prepare(query)
     result_sets = session.transaction(ydb.SerializableReadWrite()).execute(
         prepared_query,
         {
-            '$short': short
+            '$short': short,
+            '$archive': archive,
+            '$fund': fund,
+            '$inventory': inventory,
+            '$value': value,
         },
         commit_tx=True,
     )

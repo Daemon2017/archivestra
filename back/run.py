@@ -72,7 +72,11 @@ def get_descriptions():
     rq_json = request.json
     response = pool.retry_operation_sync(
         db.select_descriptions,
-        None, '%{0}%'.format(rq_json['description'])
+        None,
+        '%{0}%'.format(rq_json['description']),
+        get_json_value(rq_json, 'archive'),
+        get_json_value(rq_json, 'fund'),
+        get_json_value(rq_json, 'inventory')
     )
     response_json = json.dumps(response)
     df = pd.read_json(response_json)
@@ -206,7 +210,12 @@ def get_contents():
     rq_json = request.json
     response = pool.retry_operation_sync(
         db.select_contents,
-        None, '%{0}%'.format(rq_json['short'])
+        None,
+        '%{0}%'.format(rq_json['short']),
+        get_json_value(rq_json, 'archive'),
+        get_json_value(rq_json, 'fund'),
+        get_json_value(rq_json, 'inventory'),
+        get_json_value(rq_json, 'value')
     )
     response_json = json.dumps(response)
     df = pd.read_json(response_json)
@@ -222,6 +231,13 @@ def get_contents():
         },
         inplace=True)
     return Response(df.to_csv(sep=',', index=False, header=True), mimetype='text/csv')
+
+
+def get_json_value(rq_json, key):
+    if key in rq_json and rq_json[key] != '':
+        return rq_json[key]
+    else:
+        return ''
 
 
 if __name__ == '__main__':
