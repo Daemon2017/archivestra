@@ -54,8 +54,15 @@
             <div class="row">
                 <label>Фильтры: </label>
             </div>
-            <div class="center">
-                <label>(В разработке)</label>
+            <div class="row center">
+                <label for="searchArchiveID">Архив: </label>
+                <select id="searchArchiveID" onClick="getSearchArchives()" onChange="setSearchArchive()"></select>
+                <label for="searchFundID">Фонд: </label>
+                <select id="searchFundID" onClick="getSearchFunds()" onChange="setSearchFund()" disabled></select>
+                <label for="searchInventoryID">Опись: </label>
+                <select id="searchInventoryID" onClick="getSearchInventories()" onChange="setSearchInventory()" disabled></select>
+                <label for="searchValueID">Дело: </label>
+                <select id="searchValueID" onClick="getSearchValues()" onChange="setSearchValue()" disabled></select>
             </div>
             <div>
                 <button type="button" onClick="getSearchDescriptions()" style="width: 100%;">Искать</button>
