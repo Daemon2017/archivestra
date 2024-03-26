@@ -3,7 +3,7 @@ let isFundsLoaded = false
 let isInventoriesLoaded = false
 let isValuesLoaded = false
 
-function getArchives() {
+function getViewArchives() {
     if (!isArchivesLoaded) {
         var archives = document.getElementById('viewArchiveID');
         var opt = document.createElement('option');
@@ -31,7 +31,7 @@ function getArchives() {
     }
 }
 
-function setArchive() {
+function setViewArchive() {
     var funds = document.getElementById('viewFundID');
     funds.innerHTML = "";
     if (document.getElementById("viewArchiveID").selectedIndex != 0) {
@@ -52,7 +52,7 @@ function setArchive() {
     isValuesLoaded = false;
 }
 
-function getFunds() {
+function getViewFunds() {
     if (!isFundsLoaded) {
         var funds = document.getElementById('viewFundID');
         var opt = document.createElement('option');
@@ -84,7 +84,7 @@ function getFunds() {
     }
 }
 
-function setFund() {
+function setViewFund() {
     var inventories = document.getElementById('viewInventoryID');
     inventories.innerHTML = "";
     if (document.getElementById("viewFundID").selectedIndex != 0) {
@@ -101,7 +101,7 @@ function setFund() {
     isValuesLoaded = false;
 }
 
-function getInventories() {
+function getViewInventories() {
     if (!isInventoriesLoaded) {
         var inventories = document.getElementById('viewInventoryID');
         var opt = document.createElement('option');
@@ -134,7 +134,7 @@ function getInventories() {
     }
 }
 
-function setInventory() {
+function setViewInventory() {
     var values = document.getElementById('viewValueID');
     values.innerHTML = "";
     if (document.getElementById("viewInventoryID").selectedIndex != 0) {
@@ -147,7 +147,7 @@ function setInventory() {
     isValuesLoaded = false;
 }
 
-function getValues() {
+function getViewValues() {
     if (!isValuesLoaded) {
         var values = document.getElementById('viewValueID');
         var opt = document.createElement('option');
@@ -183,7 +183,7 @@ function getValues() {
     }
 }
 
-function setValue() {
+function setViewValue() {
     var description = document.getElementById('viewDescriptionID');
     description.value = "";
     var xhr = new XMLHttpRequest();

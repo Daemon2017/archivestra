@@ -58,7 +58,7 @@
                 <label>(В разработке)</label>
             </div>
             <div>
-                <button type="button" onClick="searchDescriptions()" style="width: 100%;">Искать</button>
+                <button type="button" onClick="getSearchDescriptions()" style="width: 100%;">Искать</button>
             </div>
             <div class="row">
                 <label for="searchResultsID">Результаты: </label>
@@ -66,7 +66,7 @@
             </div>
             <div class="row center">
                 <label for="searchPagesID">Страница: </label>
-                <select id="searchPagesID" onChange="setPage()"></select>
+                <select id="searchPagesID" onChange="setSearchPage()"></select>
             </div>
         </div>
         <div style="border-style: ridge;">
@@ -78,13 +78,13 @@
             </div>
             <div class="row center">
                 <label for="viewArchiveID">Архив: </label>
-                <select id="viewArchiveID" onClick="getArchives()" onChange="setArchive()"></select>
+                <select id="viewArchiveID" onClick="getViewArchives()" onChange="setViewArchive()"></select>
                 <label for="viewFundID">Фонд: </label>
-                <select id="viewFundID" onClick="getFunds()" onChange="setFund()" disabled></select>
+                <select id="viewFundID" onClick="getViewFunds()" onChange="setViewFund()" disabled></select>
                 <label for="viewInventoryID">Опись: </label>
-                <select id="viewInventoryID" onClick="getInventories()" onChange="setInventory()" disabled></select>
+                <select id="viewInventoryID" onClick="getViewInventories()" onChange="setViewInventory()" disabled></select>
                 <label for="viewValueID">Дело: </label>
-                <select id="viewValueID" onClick="getValues()" onChange="setValue()" disabled></select>
+                <select id="viewValueID" onClick="getViewValues()" onChange="setViewValue()" disabled></select>
             </div>
             <div class="row">
                 <label for="viewDescriptionID">Заголовок дела: </label>

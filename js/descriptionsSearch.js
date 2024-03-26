@@ -1,6 +1,6 @@
 let selectedPage = 0
 
-function searchDescriptions() {
+function getSearchDescriptions() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
@@ -33,7 +33,7 @@ function searchDescriptions() {
     xhr.send(json);
 }
 
-function setPage() {
+function setSearchPage() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
