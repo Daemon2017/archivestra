@@ -1,10 +1,10 @@
-let isArchivesLoaded = false
-let isFundsLoaded = false
-let isInventoriesLoaded = false
-let isValuesLoaded = false
+let isViewArchivesLoaded = false
+let isViewFundsLoaded = false
+let isViewInventoriesLoaded = false
+let isViewValuesLoaded = false
 
 function getViewArchives() {
-    if (!isArchivesLoaded) {
+    if (!isViewArchivesLoaded) {
         var archives = document.getElementById('viewArchiveID');
         var opt = document.createElement('option');
         opt.innerHTML = "Загрузка...";
@@ -22,7 +22,7 @@ function getViewArchives() {
                     opt.innerHTML = record;
                     archives.appendChild(opt);
                 }
-                isArchivesLoaded = true;
+                isViewArchivesLoaded = true;
             }
         }
         xhr.responseType = "json";
@@ -47,13 +47,13 @@ function setViewArchive() {
     values.disabled = true;
     var description = document.getElementById('viewDescriptionID');
     description.value = "";
-    isFundsLoaded = false;
-    isInventoriesLoaded = false;
-    isValuesLoaded = false;
+    isViewFundsLoaded = false;
+    isViewInventoriesLoaded = false;
+    isViewValuesLoaded = false;
 }
 
 function getViewFunds() {
-    if (!isFundsLoaded) {
+    if (!isViewFundsLoaded) {
         var funds = document.getElementById('viewFundID');
         var opt = document.createElement('option');
         opt.innerHTML = "Загрузка..."
@@ -71,7 +71,7 @@ function getViewFunds() {
                     opt.innerHTML = record;
                     funds.appendChild(opt);
                 }
-                isFundsLoaded = true;
+                isViewFundsLoaded = true;
             }
         }
         xhr.responseType = "json";
@@ -97,12 +97,12 @@ function setViewFund() {
     values.disabled = true;
     var description = document.getElementById('viewDescriptionID');
     description.value = "";
-    isInventoriesLoaded = false;
-    isValuesLoaded = false;
+    isViewInventoriesLoaded = false;
+    isViewValuesLoaded = false;
 }
 
 function getViewInventories() {
-    if (!isInventoriesLoaded) {
+    if (!isViewInventoriesLoaded) {
         var inventories = document.getElementById('viewInventoryID');
         var opt = document.createElement('option');
         opt.innerHTML = "Загрузка..."
@@ -120,7 +120,7 @@ function getViewInventories() {
                     opt.innerHTML = record;
                     inventories.appendChild(opt);
                 }
-                isInventoriesLoaded = true;
+                isViewInventoriesLoaded = true;
             }
         }
         xhr.responseType = "json";
@@ -144,11 +144,11 @@ function setViewInventory() {
     }
     var description = document.getElementById('viewDescriptionID');
     description.value = "";
-    isValuesLoaded = false;
+    isViewValuesLoaded = false;
 }
 
 function getViewValues() {
-    if (!isValuesLoaded) {
+    if (!isViewValuesLoaded) {
         var values = document.getElementById('viewValueID');
         var opt = document.createElement('option');
         opt.innerHTML = "Загрузка..."
@@ -166,7 +166,7 @@ function getViewValues() {
                     opt.innerHTML = record;
                     values.appendChild(opt);
                 }
-                isValuesLoaded = true;
+                isViewValuesLoaded = true;
                 var description = document.getElementById('viewDescriptionID');
                 description.value = "";
             }

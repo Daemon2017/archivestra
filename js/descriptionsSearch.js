@@ -1,4 +1,4 @@
-let selectedPage = 0
+let selectedSearchPage = 0
 
 function getSearchDescriptions() {
     var xhr = new XMLHttpRequest();
@@ -21,7 +21,7 @@ function getSearchDescriptions() {
                 opt.innerHTML = i;
                 pages.appendChild(opt);
             }
-            selectedPage = 1;
+            selectedSearchPage = 1;
         }
     }
     xhr.responseType = "arraybuffer";
@@ -52,7 +52,7 @@ function setSearchPage() {
             for (let i = 1; i <= result.pages; i++) {
                 var opt = document.createElement('option');
                 opt.innerHTML = i;
-                if (i == selectedPage) {
+                if (i == selectedSearchPage) {
                     opt.selected = true;
                 }
                 pages.appendChild(opt);
@@ -65,7 +65,7 @@ function setSearchPage() {
     var object = new Object();
     object.description = document.getElementById("searchRequestID").value;
     object.page = document.getElementById("searchPagesID").value;
-    selectedPage = document.getElementById("searchPagesID").value;
+    selectedSearchPage = document.getElementById("searchPagesID").value;
     var json = JSON.stringify(object);
     xhr.send(json);
 }
