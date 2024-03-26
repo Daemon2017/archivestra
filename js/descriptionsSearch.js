@@ -5,7 +5,7 @@ function searchDescriptions() {
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             var result = JSON.parse(new TextDecoder().decode(this.response));
-            var table = document.getElementById("resultsID");
+            var table = document.getElementById("searchResultsID");
             table.innerHTML = "";
             for (let row of CSV.parse(result.body)) {
                 let tr = table.insertRow();
@@ -14,7 +14,7 @@ function searchDescriptions() {
                     td.innerHTML = col;
                 }
             }
-            var pages = document.getElementById("pagesID");
+            var pages = document.getElementById("searchPagesID");
             pages.innerHTML = "";
             for (let i = 1; i <= result.pages; i++) {
                 var opt = document.createElement('option');
@@ -28,7 +28,7 @@ function searchDescriptions() {
     xhr.open("POST", "https://bba2usld8315kgujg51n.containers.yandexcloud.net/descriptions");
     xhr.setRequestHeader("Content-Type", "application/json");
     var object = new Object();
-    object.description = document.getElementById("requestID").value;
+    object.description = document.getElementById("searchRequestID").value;
     var json = JSON.stringify(object);
     xhr.send(json);
 }
@@ -38,7 +38,7 @@ function setPage() {
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             var result = JSON.parse(new TextDecoder().decode(this.response));
-            var table = document.getElementById("resultsID");
+            var table = document.getElementById("searchResultsID");
             table.innerHTML = "";
             for (let row of CSV.parse(result.body)) {
                 let tr = table.insertRow();
@@ -47,7 +47,7 @@ function setPage() {
                     td.innerHTML = col;
                 }
             }
-            var pages = document.getElementById("pagesID");
+            var pages = document.getElementById("searchPagesID");
             pages.innerHTML = "";
             for (let i = 1; i <= result.pages; i++) {
                 var opt = document.createElement('option');
@@ -63,9 +63,9 @@ function setPage() {
     xhr.open("POST", "https://bba2usld8315kgujg51n.containers.yandexcloud.net/descriptions");
     xhr.setRequestHeader("Content-Type", "application/json");
     var object = new Object();
-    object.description = document.getElementById("requestID").value;
-    object.page = document.getElementById("pagesID").value;
-    selectedPage = document.getElementById("pagesID").value;
+    object.description = document.getElementById("searchRequestID").value;
+    object.page = document.getElementById("searchPagesID").value;
+    selectedPage = document.getElementById("searchPagesID").value;
     var json = JSON.stringify(object);
     xhr.send(json);
 }

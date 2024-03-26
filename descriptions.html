@@ -48,8 +48,8 @@
                 <h3>Поиск</h3>
             </div>
             <div class="row">
-                <label for="requestID">Фраза для поиска: </label>
-                <input id="requestID" style="width: 100%;">
+                <label for="searchRequestID">Фраза для поиска: </label>
+                <input id="searchRequestID" style="width: 100%;">
             </div>
             <div class="row">
                 <label>Фильтры: </label>
@@ -61,12 +61,12 @@
                 <button type="button" onClick="searchDescriptions()" style="width: 100%;">Искать</button>
             </div>
             <div class="row">
-                <label for="resultsID">Результаты: </label>
-                <table id="resultsID" style="width: 100%; border-style: dashed;"></table>
+                <label for="searchResultsID">Результаты: </label>
+                <table id="searchResultsID" style="width: 100%; border-style: dashed;"></table>
             </div>
             <div class="row center">
-                <label for="pagesID">Страница: </label>
-                <select id="pagesID" onChange="setPage()"></select>
+                <label for="searchPagesID">Страница: </label>
+                <select id="searchPagesID" onChange="setPage()"></select>
             </div>
         </div>
         <div style="border-style: ridge;">
@@ -77,18 +77,18 @@
                 <label>Навигация: </label>
             </div>
             <div class="row center">
-                <label for="archiveID">Архив: </label>
-                <select id="archiveID" onClick="getArchives()" onChange="setArchive()"></select>
-                <label for="fundID">Фонд: </label>
-                <select id="fundID" onClick="getFunds()" onChange="setFund()" disabled></select>
-                <label for="inventoryID">Опись: </label>
-                <select id="inventoryID" onClick="getInventories()" onChange="setInventory()" disabled></select>
-                <label for="valueID">Дело: </label>
-                <select id="valueID" onClick="getValues()" onChange="setValue()" disabled></select>
+                <label for="viewArchiveID">Архив: </label>
+                <select id="viewArchiveID" onClick="getArchives()" onChange="setArchive()"></select>
+                <label for="viewFundID">Фонд: </label>
+                <select id="viewFundID" onClick="getFunds()" onChange="setFund()" disabled></select>
+                <label for="viewInventoryID">Опись: </label>
+                <select id="viewInventoryID" onClick="getInventories()" onChange="setInventory()" disabled></select>
+                <label for="viewValueID">Дело: </label>
+                <select id="viewValueID" onClick="getValues()" onChange="setValue()" disabled></select>
             </div>
             <div class="row">
-                <label for="descriptionID">Заголовок дела: </label>
-                <textarea id="descriptionID" rows="3" wrap="off" style="width: 100%;" disabled></textarea>
+                <label for="viewDescriptionID">Заголовок дела: </label>
+                <textarea id="viewDescriptionID" rows="3" wrap="off" style="width: 100%;" disabled></textarea>
             </div>
         </div>
     </form>
