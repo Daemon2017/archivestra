@@ -1,3 +1,7 @@
+const searchResultsID = "searchResultsID"
+const searchPagesID = "searchPagesID"
+const searchRequestID = "searchRequestID"
+
 let selectedSearchPage = 0
 
 function getSearchDescriptions() {
@@ -5,7 +9,7 @@ function getSearchDescriptions() {
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             var result = JSON.parse(new TextDecoder().decode(this.response));
-            var table = document.getElementById("searchResultsID");
+            var table = document.getElementById(searchResultsID);
             table.innerHTML = "";
             for (let row of CSV.parse(result.body)) {
                 let tr = table.insertRow();
@@ -14,7 +18,7 @@ function getSearchDescriptions() {
                     td.innerHTML = col;
                 }
             }
-            var pages = document.getElementById("searchPagesID");
+            var pages = document.getElementById(searchPagesID);
             pages.innerHTML = "";
             for (let i = 1; i <= result.pages; i++) {
                 var opt = document.createElement('option');
@@ -28,7 +32,7 @@ function getSearchDescriptions() {
     xhr.open("POST", "https://bba2usld8315kgujg51n.containers.yandexcloud.net/descriptions");
     xhr.setRequestHeader("Content-Type", "application/json");
     var object = new Object();
-    object.description = document.getElementById("searchRequestID").value;
+    object.description = document.getElementById(searchRequestID).value;
     var json = JSON.stringify(object);
     xhr.send(json);
 }
@@ -38,7 +42,7 @@ function setSearchPage() {
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             var result = JSON.parse(new TextDecoder().decode(this.response));
-            var table = document.getElementById("searchResultsID");
+            var table = document.getElementById(searchResultsID);
             table.innerHTML = "";
             for (let row of CSV.parse(result.body)) {
                 let tr = table.insertRow();
@@ -47,7 +51,7 @@ function setSearchPage() {
                     td.innerHTML = col;
                 }
             }
-            var pages = document.getElementById("searchPagesID");
+            var pages = document.getElementById(searchPagesID);
             pages.innerHTML = "";
             for (let i = 1; i <= result.pages; i++) {
                 var opt = document.createElement('option');
@@ -63,9 +67,9 @@ function setSearchPage() {
     xhr.open("POST", "https://bba2usld8315kgujg51n.containers.yandexcloud.net/descriptions");
     xhr.setRequestHeader("Content-Type", "application/json");
     var object = new Object();
-    object.description = document.getElementById("searchRequestID").value;
-    object.page = document.getElementById("searchPagesID").value;
-    selectedSearchPage = document.getElementById("searchPagesID").value;
+    object.description = document.getElementById(searchRequestID).value;
+    object.page = document.getElementById(searchPagesID).value;
+    selectedSearchPage = document.getElementById(searchPagesID).value;
     var json = JSON.stringify(object);
     xhr.send(json);
 }
