@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="#" />
+
+    <title>archivestra</title>
+
+    <script src="js/contentsSearch.js"></script>
+    <script src="js/contentsView.js"></script>
+
+    <script defer src="js/csv.min.js"></script>
+
+    <style>
+        .column {
+            float: left;
+            width: 50%;
+        }
+
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .center {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <form style="width: 66%;">
+        <div class="center">
+            <h1>archivestra</h1>
+        </div>
+        <div class="row">
+            <div class="column center">
+                <a href="./descriptions.html">Поиск по заголовкам</a>
+            </div>
+            <div class="column center">
+                <a href="./contents.html" style="font-weight:bold;">Поиск по содержимому</a>
+            </div>
+        </div>
+        <div style="border-style: ridge;">
+            <div class="center">
+                <h3>Поиск</h3>
+            </div>
+            <div>
+                <p>Как пользоваться поиском?</p>
+            </div>
+            <div class="row">
+                <label for="searchRequestID">Фраза для поиска: </label>
+                <input id="searchRequestID" style="width: 100%;">
+            </div>
+            <div class="row">
+                <span>Фильтры: </span>
+            </div>
+            <div class="row center">
+                <label for="searchArchiveID">Архив: </label>
+                <select id="searchArchiveID" onClick="getSearchArchives()" onChange="setSearchArchive()"></select>
+                <label for="searchFundID">Фонд: </label>
+                <select id="searchFundID" onClick="getSearchFunds()" onChange="setSearchFund()" disabled></select>
+                <label for="searchInventoryID">Опись: </label>
+                <select id="searchInventoryID" onClick="getSearchInventories()" onChange="setSearchInventories()" disabled></select>
+                <label for="searchValueID">Дело: </label>
+                <select id="searchValueID" onClick="getSearchValues()" disabled></select>
+            </div>
+            <div>
+                <button type="button" onClick="getSearchContents()" style="width: 100%;">Искать</button>
+            </div>
+            <div class="row">
+                <span>Результаты: </span>
+                <table id="searchResultsID" style="width: 100%; border-style: dashed;"></table>
+            </div>
+            <div class="row center">
+                <label for="searchPagesID">Страница: </label>
+                <select id="searchPagesID" onChange="setSearchPage()"></select>
+            </div>
+        </div>
+        <div style="border-style: ridge;">
+            <div class="center">
+                <h3>Просмотр</h3>
+            </div>
+            <div>
+                <p>Как пользоваться просмотром?</p>
+            </div>
+            <div class="row">
+                <span>Навигация: </span>
+            </div>
+            <div class="row center">
+                <label for="viewArchiveID">Архив: </label>
+                <select id="viewArchiveID" onClick="getViewArchives()" onChange="setViewArchive()"></select>
+                <label for="viewFundID">Фонд: </label>
+                <select id="viewFundID" onClick="getViewFunds()" onChange="setViewFund()" disabled></select>
+                <label for="viewInventoryID">Опись: </label>
+                <select id="viewInventoryID" onClick="getViewInventories()" onChange="setViewInventory()" disabled></select>
+                <label for="viewValueID">Дело: </label>
+                <select id="viewValueID" onClick="getViewValues()" onChange="setViewValue()" disabled></select>
+                <label for="viewPageID">Страница: </label>
+                <select id="viewPageID" onClick="getViewPages()" onChange="setViewPage()" disabled></select>
+            </div>
+            <div class="row">
+                <label for="viewContentID">Содержимое страницы: </label>
+                <textarea id="viewContentID" rows="3" wrap="off" style="width: 100%;" disabled></textarea>
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>
