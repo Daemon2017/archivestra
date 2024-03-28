@@ -46,6 +46,16 @@ def get_content(content, api_key):
 def main():
     api_key = get_api_key(ocr_key_path)
     pool = db.get_session_pool()
+    print('Создаю таблицу descriptions...')
+    pool.retry_operation_sync(
+        db.create_descriptions,
+        None
+    )
+    print('Создаю таблицу contents...')
+    pool.retry_operation_sync(
+        db.create_contents,
+        None
+    )
     for archive in os.listdir(os.path.join(data_dir)):
         for fund in os.listdir(os.path.join(data_dir, archive)):
             for inventory in os.listdir(os.path.join(data_dir, archive, fund)):

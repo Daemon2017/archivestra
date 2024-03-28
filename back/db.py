@@ -15,6 +15,20 @@ def get_session_pool():
     return pool
 
 
+def create_descriptions(session):
+    query = """
+        CREATE TABLE descriptions (
+        archive Utf8 NOT NULL, 
+        fund Utf8 NOT NULL, 
+        inventory Utf8 NOT NULL, 
+        value Utf8 NOT NULL, 
+        description Utf8,
+        PRIMARY KEY (archive, fund, inventory, value)
+        );
+        """
+    session.execute_scheme(query)
+
+
 def upsert_descriptions(session, archive, fund, inventory, value, description):
     query = """
         DECLARE $archive AS Utf8;
@@ -177,6 +191,22 @@ def select_descriptions(session, description, archive, fund, inventory):
         commit_tx=True,
     )
     return result_sets[0].rows
+
+
+def create_contents(session):
+    query = """
+        CREATE TABLE contents (
+        archive Utf8 NOT NULL, 
+        fund Utf8 NOT NULL, 
+        inventory Utf8 NOT NULL, 
+        value Utf8 NOT NULL, 
+        page Uint64 NOT NULL,
+        short Utf8,
+        content Utf8,
+        PRIMARY KEY (archive, fund, inventory, value, page)
+        );
+        """
+    session.execute_scheme(query)
 
 
 def upsert_contents(session, archive, fund, inventory, value, page, short, content):
