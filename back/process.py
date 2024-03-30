@@ -28,7 +28,7 @@ def read_description(path):
 def get_content(content, api_key):
     url = "https://ocr.api.cloud.yandex.net/ocr/v1/recognizeText"
     payload = json.dumps({
-        "mimeType": "image",
+        "mimeType": "JPEG",
         "languageCodes": ["ru"],
         "model": "handwritten",
         "content": content
