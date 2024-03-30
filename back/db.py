@@ -38,7 +38,7 @@ def upsert_descriptions(session, archive, fund, inventory, value, description):
         DECLARE $description AS Utf8;
         UPSERT INTO descriptions (archive, fund, inventory, value, description) 
         VALUES ($archive, $fund, $inventory, $value, $description);
-        """.format(archive, fund, inventory, value, description)
+        """
     prepared_query = session.prepare(query)
     session.transaction().execute(
         prepared_query,
