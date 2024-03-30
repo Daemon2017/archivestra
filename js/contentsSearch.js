@@ -53,8 +53,12 @@ function setSearchArchive() {
     var inventories = document.getElementById(searchInventoryID);
     inventories.innerHTML = "";
     inventories.disabled = true;
+    var values = document.getElementById(searchValueID);
+    values.innerHTML = "";
+    values.disabled = true;
     isSearchFundsLoaded = false;
     isSearchInventoriesLoaded = false;
+    isSearchValuesLoaded = false;
 }
 
 function getSearchFunds() {
@@ -97,7 +101,11 @@ function setSearchFund() {
     } else {
         inventories.disabled = true
     }
+    var values = document.getElementById(searchValueID);
+    values.innerHTML = "";
+    values.disabled = true;
     isSearchInventoriesLoaded = false;
+    isSearchValuesLoaded = false;
 }
 
 function getSearchInventories() {
@@ -210,6 +218,7 @@ function getSearchContents() {
     object.archive = document.getElementById(searchArchiveID).value;
     object.fund = document.getElementById(searchFundID).value;
     object.inventory = document.getElementById(searchInventoryID).value;
+    object.value = document.getElementById(searchValueID).value;
     var json = JSON.stringify(object);
     xhr.send(json);
 }
@@ -248,6 +257,7 @@ function setSearchPage() {
     object.archive = document.getElementById(searchArchiveID).value;
     object.fund = document.getElementById(searchFundID).value;
     object.inventory = document.getElementById(searchInventoryID).value;
+    object.value = document.getElementById(searchValueID).value;
     object.page = document.getElementById(searchPagesID).value;
     selectedSearchPage = document.getElementById(searchPagesID).value;
     var json = JSON.stringify(object);
