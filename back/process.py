@@ -86,7 +86,7 @@ def main():
                         db.select_contents_page,
                         None, archive, fund, inventory, value
                     )
-                    filenames = list(filter(lambda f: f.endswith('.jpg'), os.listdir(path)))
+                    filenames = list(filter(lambda f: f.lower().endswith('.jpg'), os.listdir(path)))
                     pages = [int(os.path.splitext(filename)[0]) for filename in filenames]
                     pages.sort()
                     for page in pages:
