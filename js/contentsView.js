@@ -4,6 +4,7 @@ const viewInventoryID = "viewInventoryID"
 const viewValueID = "viewValueID"
 const viewPageID = "viewPageID"
 const viewShortID = "viewShortID"
+const viewContentID = "viewContentID"
 
 let isViewArchivesLoaded = false
 let isViewFundsLoaded = false
@@ -254,16 +255,16 @@ function getViewPages() {
 function setViewPage() {
     var short = document.getElementById(viewShortID);
     short.value = "Загрузка...";
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
+    var xhrShort = new XMLHttpRequest();
+    xhrShort.onreadystatechange = function() {
+        if (xhrShort.readyState == 4 && xhrShort.status == 200) {
             var record = this.response;
             short.value = record;
         }
     }
-    xhr.responseType = "json";
-    xhr.open("POST", "https://bba2usld8315kgujg51n.containers.yandexcloud.net/contents_short");
-    xhr.setRequestHeader("Content-Type", "application/json");
+    xhrShort.responseType = "json";
+    xhrShort.open("POST", "https://bba2usld8315kgujg51n.containers.yandexcloud.net/contents_short");
+    xhrShort.setRequestHeader("Content-Type", "application/json");
     var object = new Object();
     object.archive = document.getElementById(viewArchiveID).value;
     object.fund = document.getElementById(viewFundID).value;
@@ -271,5 +272,24 @@ function setViewPage() {
     object.value = document.getElementById(viewValueID).value;
     object.page = Number(document.getElementById(viewPageID).value);
     var json = JSON.stringify(object);
-    xhr.send(json);
+    xhrShort.send(json);
+    var content = document.getElementById(viewContentID);
+    var xhrContent = new XMLHttpRequest();
+    xhrContent.onreadystatechange = function() {
+        if (xhrContent.readyState == 4 && xhrContent.status == 200) {
+            var record = this.response;
+            content.innerHTML = record;
+        }
+    }
+    xhrContent.responseType = "text";
+    xhrContent.open("POST", "https://bba2usld8315kgujg51n.containers.yandexcloud.net/contents_content");
+    xhrContent.setRequestHeader("Content-Type", "application/json");
+    var object = new Object();
+    object.archive = document.getElementById(viewArchiveID).value;
+    object.fund = document.getElementById(viewFundID).value;
+    object.inventory = document.getElementById(viewInventoryID).value;
+    object.value = document.getElementById(viewValueID).value;
+    object.page = Number(document.getElementById(viewPageID).value);
+    var json = JSON.stringify(object);
+    xhrContent.send(json);
 }
