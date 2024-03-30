@@ -181,9 +181,9 @@ def get_contents_content():
     text_annotation = data['result']['textAnnotation']
     root = etree.Element(
         'svg',
-        height=text_annotation['height'],
-        width=text_annotation['width'],
-        viewBox="0 0 ${0} ${1}".format(text_annotation['width'], text_annotation['height']),
+        height='100%',
+        width='100%',
+        viewBox="0 0 {0} {1}".format(text_annotation['width'], text_annotation['height']),
         xmlns='http://www.w3.org/2000/svg'
     )
     for block in data['result']['textAnnotation']['blocks']:
