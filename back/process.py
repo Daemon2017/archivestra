@@ -101,7 +101,8 @@ def main():
                             content_json = json.loads(content)
                             if 'error' in content_json:
                                 print('Ошибка в ходе распознавания страницы {0}! '
-                                      'Перехожу к следующей странице...'.format(page))
+                                      'Текст ошибки: {1} '
+                                      'Перехожу к следующей странице...'.format(page, content_json['error']))
                                 continue
                             else:
                                 short = content_json['result']['textAnnotation']['fullText'].replace('\n', ' ')
