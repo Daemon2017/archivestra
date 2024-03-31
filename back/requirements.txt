@@ -7,3 +7,4 @@ PyYAML~=6.0.1
 ydb~=3.8.0
 lxml~=4.6.4
 pandas~=1.5.3
+natsort~=8.4.0

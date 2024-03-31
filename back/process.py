@@ -2,6 +2,7 @@ import base64
 import json
 import os
 
+import natsort
 import requests
 import yaml
 
@@ -56,10 +57,10 @@ def main():
         db.create_contents,
         None
     )
-    for archive in os.listdir(os.path.join(data_dir)):
-        for fund in os.listdir(os.path.join(data_dir, archive)):
-            for inventory in os.listdir(os.path.join(data_dir, archive, fund)):
-                for value in os.listdir(os.path.join(data_dir, archive, fund, inventory)):
+    for archive in natsort.natsorted(os.listdir(os.path.join(data_dir))):
+        for fund in natsort.natsorted(os.listdir(os.path.join(data_dir, archive))):
+            for inventory in natsort.natsorted(os.listdir(os.path.join(data_dir, archive, fund))):
+                for value in natsort.natsorted(os.listdir(os.path.join(data_dir, archive, fund, inventory))):
                     print('\nПереключаюсь на архив {0} фонд {1} опись {2} дело {3}...'
                           .format(archive, fund, inventory, value))
                     path = os.path.join(data_dir, archive, fund, inventory, value)
@@ -87,10 +88,9 @@ def main():
                         None, archive, fund, inventory, value
                     )
                     filenames = list(filter(lambda f: f.lower().endswith('.jpg'), os.listdir(path)))
-                    pages = [int(os.path.splitext(filename)[0]) for filename in filenames]
-                    pages.sort()
-                    for page in pages:
-                        if page in [int(row['page']) for row in response]:
+                    pages = [os.path.splitext(filename)[0] for filename in filenames]
+                    for page in natsort.natsorted(pages):
+                        if page in [row['page'] for row in response]:
                             print('Страница {0} уже распознана и выгружена в БД! '
                                   'Перехожу к следующей странице...'.format(page))
                             continue

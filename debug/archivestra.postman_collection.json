@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"short\": \"Дело\",\r\n    \"archive\": \"\",\r\n    \"fund\": \"\",\r\n    \"inventory\": \"\",\r\n    \"value\": \"\",\r\n    \"page\": 1\r\n}",
+							"raw": "{\r\n    \"short\": \"\",\r\n    \"archive\": \"\",\r\n    \"fund\": \"\",\r\n    \"inventory\": \"\",\r\n    \"value\": \"\",\r\n    \"page\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -43,7 +43,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"archive\": \"ГАУО\",\r\n    \"fund\": \"970\",\r\n    \"inventory\": \"1\",\r\n    \"value\": \"0\",\r\n    \"page\": 10\r\n}",
+							"raw": "{\r\n    \"archive\": \"ГАУО\",\r\n    \"fund\": \"970\",\r\n    \"inventory\": \"1\",\r\n    \"value\": \"0\",\r\n    \"page\": \"10\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -71,7 +71,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"archive\": \"ГАУО\",\r\n    \"fund\": \"970\",\r\n    \"inventory\": \"1\",\r\n    \"value\": \"0\",\r\n    \"page\": 10\r\n}",
+							"raw": "{\r\n    \"archive\": \"ГАУО\",\r\n    \"fund\": \"970\",\r\n    \"inventory\": \"1\",\r\n    \"value\": \"0\",\r\n    \"page\": \"10\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

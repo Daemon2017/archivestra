@@ -1,6 +1,7 @@
 import json
 from math import ceil
 
+import natsort
 import pandas as pd
 from flask import Flask, request, Response
 from flask_cors import CORS
@@ -20,7 +21,7 @@ def get_descriptions_archive():
         db.select_descriptions_archive,
         None
     )
-    pages = [row['archive'] for row in response]
+    pages = natsort.natsorted([row['archive'] for row in response])
     return Response(json.dumps(pages), mimetype='application/json')
 
 
@@ -31,7 +32,7 @@ def get_descriptions_fund():
         db.select_descriptions_fund,
         None, rq_json['archive']
     )
-    funds = [row['fund'] for row in response]
+    funds = natsort.natsorted([row['fund'] for row in response])
     return Response(json.dumps(funds), mimetype='application/json')
 
 
@@ -42,7 +43,7 @@ def get_descriptions_inventory():
         db.select_descriptions_inventory,
         None, rq_json['archive'], rq_json['fund']
     )
-    inventories = [row['inventory'] for row in response]
+    inventories = natsort.natsorted([row['inventory'] for row in response])
     return Response(json.dumps(inventories), mimetype='application/json')
 
 
@@ -53,7 +54,7 @@ def get_descriptions_value():
         db.select_descriptions_value,
         None, rq_json['archive'], rq_json['fund'], rq_json['inventory']
     )
-    values = [row['value'] for row in response]
+    values = natsort.natsorted([row['value'] for row in response])
     return Response(json.dumps(values), mimetype='application/json')
 
 
@@ -83,7 +84,7 @@ def get_descriptions():
     pages = ceil(len(df) / 10)
     page = 1
     if 'page' in rq_json and rq_json['page'] != '':
-        page = int(rq_json['page'])
+        page = rq_json['page']
     from_row = (page - 1) * 10
     to_row = page * 10
     df = df[from_row:to_row]
@@ -112,7 +113,7 @@ def get_contents_archive():
         db.select_contents_archive,
         None
     )
-    archives = [row['archive'] for row in response]
+    archives = natsort.natsorted([row['archive'] for row in response])
     return Response(json.dumps(archives), mimetype='application/json')
 
 
@@ -123,7 +124,7 @@ def get_contents_fund():
         db.select_contents_fund,
         None, rq_json['archive']
     )
-    funds = [row['fund'] for row in response]
+    funds = natsort.natsorted([row['fund'] for row in response])
     return Response(json.dumps(funds), mimetype='application/json')
 
 
@@ -134,7 +135,7 @@ def get_contents_inventory():
         db.select_contents_inventory,
         None, rq_json['archive'], rq_json['fund']
     )
-    inventories = [row['inventory'] for row in response]
+    inventories = natsort.natsorted([row['inventory'] for row in response])
     return Response(json.dumps(inventories), mimetype='application/json')
 
 
@@ -145,7 +146,7 @@ def get_contents_value():
         db.select_contents_value,
         None, rq_json['archive'], rq_json['fund'], rq_json['inventory']
     )
-    values = [row['value'] for row in response]
+    values = natsort.natsorted([row['value'] for row in response])
     return Response(json.dumps(values), mimetype='application/json')
 
 
@@ -156,7 +157,7 @@ def get_contents_page():
         db.select_contents_page,
         None, rq_json['archive'], rq_json['fund'], rq_json['inventory'], rq_json['value']
     )
-    pages = [int(row['page']) for row in response]
+    pages = natsort.natsorted([row['page'] for row in response])
     return Response(json.dumps(pages), mimetype='application/json')
 
 
@@ -223,7 +224,7 @@ def get_contents():
     pages = ceil(len(df) / 10)
     page = 1
     if 'page' in rq_json and rq_json['page'] != '':
-        page = int(rq_json['page'])
+        page = rq_json['page']
     from_row = (page - 1) * 10
     to_row = page * 10
     df = df[from_row:to_row]
