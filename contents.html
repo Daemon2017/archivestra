@@ -30,8 +30,8 @@
     </style>
 </head>
 
-<body>
-    <form style="width: 66%;">
+<body onload="main()">
+    <div style="width: 66%;">
         <div class="center">
             <h1>archivestra</h1>
         </div>
@@ -68,7 +68,7 @@
                 <select id="searchValueID" onClick="getSearchValues()" disabled></select>
             </div>
             <div>
-                <button type="button" onClick="getSearchContents()" style="width: 100%;" autofocus>Искать</button>
+                <button id="searchButtonID" type="button" onClick="getSearchContents()" style="width: 100%;" autofocus>Искать</button>
             </div>
             <div class="row">
                 <span>Результаты: </span>
@@ -107,7 +107,7 @@
                 <div id="viewContentID"></div>
             </div>
         </div>
-    </form>
+    </div>
 </body>
 
 </html>

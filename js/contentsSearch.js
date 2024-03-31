@@ -9,10 +9,22 @@ let isSearchInventoriesLoaded = false
 let isSearchValuesLoaded = false
 
 const searchRequestID = "searchRequestID"
+const searchButtonID = "searchButtonID"
 const searchResultsID = "searchResultsID"
 const searchCurrentPagesID = "searchCurrentPagesID"
 
 let selectedSearchCurrentPage = 0
+
+function main() {
+    const input = document.getElementById(searchRequestID);
+
+    input.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        document.getElementById(searchButtonID).click();
+      }
+    });
+};
 
 function getSearchArchives() {
     if (!isSearchArchivesLoaded) {
