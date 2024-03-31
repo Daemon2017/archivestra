@@ -82,11 +82,11 @@ def get_descriptions():
     response_json = json.dumps(response)
     df = pd.read_json(response_json)
     pages = ceil(len(df) / 10)
-    page = 1
-    if 'page' in rq_json and rq_json['page'] != '':
-        page = rq_json['page']
-    from_row = (page - 1) * 10
-    to_row = page * 10
+    current_page = 1
+    if 'currentPage' in rq_json and rq_json['currentPage'] != '':
+        current_page = int(rq_json['currentPage'])
+    from_row = (current_page - 1) * 10
+    to_row = current_page * 10
     df = df[from_row:to_row]
     df.rename(
         columns=
@@ -222,11 +222,11 @@ def get_contents():
     response_json = json.dumps(response)
     df = pd.read_json(response_json)
     pages = ceil(len(df) / 10)
-    page = 1
-    if 'page' in rq_json and rq_json['page'] != '':
-        page = rq_json['page']
-    from_row = (page - 1) * 10
-    to_row = page * 10
+    current_page = 1
+    if 'currentPage' in rq_json and rq_json['currentPage'] != '':
+        current_page = int(rq_json['currentPage'])
+    from_row = (current_page - 1) * 10
+    to_row = current_page * 10
     df = df[from_row:to_row]
     df.rename(
         columns=

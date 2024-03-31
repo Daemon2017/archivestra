@@ -270,7 +270,7 @@ function setViewPage() {
     object.fund = document.getElementById(viewFundID).value;
     object.inventory = document.getElementById(viewInventoryID).value;
     object.value = document.getElementById(viewValueID).value;
-    object.page = Number(document.getElementById(viewPageID).value);
+    object.page = document.getElementById(viewPageID).value;
     var json = JSON.stringify(object);
     xhrShort.send(json);
     var content = document.getElementById(viewContentID);
@@ -289,7 +289,7 @@ function setViewPage() {
     object.fund = document.getElementById(viewFundID).value;
     object.inventory = document.getElementById(viewInventoryID).value;
     object.value = document.getElementById(viewValueID).value;
-    object.page = Number(document.getElementById(viewPageID).value);
+    object.page = document.getElementById(viewPageID).value;
     var json = JSON.stringify(object);
     xhrContent.send(json);
 }

@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"short\": \"\",\r\n    \"archive\": \"\",\r\n    \"fund\": \"\",\r\n    \"inventory\": \"\",\r\n    \"value\": \"\",\r\n    \"page\": 1\r\n}",
+							"raw": "{\r\n    \"short\": \"\",\r\n    \"archive\": \"\",\r\n    \"fund\": \"\",\r\n    \"inventory\": \"\",\r\n    \"value\": \"\",\r\n    \"currentPage\": \"1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -244,7 +244,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"\",\r\n    \"archive\": \"\",\r\n    \"fund\": \"\",\r\n    \"inventory\": \"\",\r\n    \"page\": 1\r\n}",
+							"raw": "{\r\n    \"description\": \"\",\r\n    \"archive\": \"\",\r\n    \"fund\": \"\",\r\n    \"inventory\": \"\",\r\n    \"currentPage\": \"1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

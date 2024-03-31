@@ -10,9 +10,9 @@ let isSearchValuesLoaded = false
 
 const searchRequestID = "searchRequestID"
 const searchResultsID = "searchResultsID"
-const searchPagesID = "searchPagesID"
+const searchCurrentPagesID = "searchCurrentPagesID"
 
-let selectedSearchPage = 0
+let selectedSearchCurrentPage = 0
 
 function getSearchArchives() {
     if (!isSearchArchivesLoaded) {
@@ -200,14 +200,14 @@ function getSearchContents() {
                     td.innerHTML = col;
                 }
             }
-            var pages = document.getElementById(searchPagesID);
+            var pages = document.getElementById(searchCurrentPagesID);
             pages.innerHTML = "";
             for (let i = 1; i <= result.pages; i++) {
                 var opt = document.createElement('option');
                 opt.innerHTML = i;
                 pages.appendChild(opt);
             }
-            selectedSearchPage = 1;
+            selectedSearchCurrentPage = 1;
         }
     }
     xhr.responseType = "arraybuffer";
@@ -223,7 +223,7 @@ function getSearchContents() {
     xhr.send(json);
 }
 
-function setSearchPage() {
+function setSearchCurrentPage() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
@@ -237,12 +237,12 @@ function setSearchPage() {
                     td.innerHTML = col;
                 }
             }
-            var pages = document.getElementById(searchPagesID);
+            var pages = document.getElementById(searchCurrentPagesID);
             pages.innerHTML = "";
             for (let i = 1; i <= result.pages; i++) {
                 var opt = document.createElement('option');
                 opt.innerHTML = i;
-                if (i == selectedSearchPage) {
+                if (i == selectedSearchCurrentPage) {
                     opt.selected = true;
                 }
                 pages.appendChild(opt);
@@ -258,8 +258,8 @@ function setSearchPage() {
     object.fund = document.getElementById(searchFundID).value;
     object.inventory = document.getElementById(searchInventoryID).value;
     object.value = document.getElementById(searchValueID).value;
-    object.page = document.getElementById(searchPagesID).value;
-    selectedSearchPage = document.getElementById(searchPagesID).value;
+    object.currentPage = document.getElementById(searchCurrentPagesID).value;
+    selectedSearchCurrentPage = document.getElementById(searchCurrentPagesID).value;
     var json = JSON.stringify(object);
     xhr.send(json);
 }
