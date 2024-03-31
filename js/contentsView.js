@@ -59,6 +59,8 @@ function setViewArchive() {
     pages.disabled = true;
     var short = document.getElementById(viewShortID);
     short.value = "";
+    var content = document.getElementById(viewContentID);
+    content.innerHTML = "";
     isViewFundsLoaded = false;
     isViewInventoriesLoaded = false;
     isViewValuesLoaded = false;
@@ -113,6 +115,8 @@ function setViewFund() {
     pages.disabled = true;
     var short = document.getElementById(viewShortID);
     short.value = "";
+    var content = document.getElementById(viewContentID);
+    content.innerHTML = "";
     isViewInventoriesLoaded = false;
     isViewValuesLoaded = false;
     isViewPagesLoaded = false;
@@ -164,6 +168,8 @@ function setViewInventory() {
     pages.disabled = true;
     var short = document.getElementById(viewShortID);
     short.value = "";
+    var content = document.getElementById(viewContentID);
+    content.innerHTML = "";
     isViewValuesLoaded = false;
     isViewPagesLoaded = false;
 }
@@ -212,6 +218,8 @@ function setViewValue() {
     }
     var short = document.getElementById(viewShortID);
     short.value = "";
+    var content = document.getElementById(viewContentID);
+    content.innerHTML = "";
     isViewPagesLoaded = false;
 }
 
@@ -237,6 +245,8 @@ function getViewPages() {
                 isViewPagesLoaded = true;
                 var short = document.getElementById(viewShortID);
                 short.value = "";
+                var content = document.getElementById(viewContentID);
+                content.innerHTML = "";
             }
         }
         xhr.responseType = "json";
