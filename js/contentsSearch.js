@@ -29,6 +29,7 @@ function main() {
 function getSearchArchives() {
     if (!isSearchArchivesLoaded) {
         var archives = document.getElementById(searchArchiveID);
+        archives.innerHTML = "";
         var opt = document.createElement('option');
         opt.innerHTML = "Загрузка...";
         archives.appendChild(opt);
@@ -76,6 +77,7 @@ function setSearchArchive() {
 function getSearchFunds() {
     if (!isSearchFundsLoaded) {
         var funds = document.getElementById(searchFundID);
+        funds.innerHTML = "";
         var opt = document.createElement('option');
         opt.innerHTML = "Загрузка..."
         funds.appendChild(opt);
@@ -123,6 +125,7 @@ function setSearchFund() {
 function getSearchInventories() {
     if (!isSearchInventoriesLoaded) {
         var inventories = document.getElementById(searchInventoryID);
+        inventories.innerHTML = "";
         var opt = document.createElement('option');
         opt.innerHTML = "Загрузка..."
         inventories.appendChild(opt);
@@ -167,6 +170,7 @@ function setSearchInventories() {
 function getSearchValues() {
     if (!isSearchValuesLoaded) {
         var values = document.getElementById(searchValueID);
+        values.innerHTML = "";
         var opt = document.createElement('option');
         opt.innerHTML = "Загрузка..."
         values.appendChild(opt);

@@ -12,6 +12,7 @@ let isViewValuesLoaded = false
 function getViewArchives() {
     if (!isViewArchivesLoaded) {
         var archives = document.getElementById(viewArchiveID);
+        archives.innerHTML = "";
         var opt = document.createElement('option');
         opt.innerHTML = "Загрузка...";
         archives.appendChild(opt);
@@ -61,6 +62,7 @@ function setViewArchive() {
 function getViewFunds() {
     if (!isViewFundsLoaded) {
         var funds = document.getElementById(viewFundID);
+        funds.innerHTML = "";
         var opt = document.createElement('option');
         opt.innerHTML = "Загрузка..."
         funds.appendChild(opt);
@@ -110,6 +112,7 @@ function setViewFund() {
 function getViewInventories() {
     if (!isViewInventoriesLoaded) {
         var inventories = document.getElementById(viewInventoryID);
+        inventories.innerHTML = "";
         var opt = document.createElement('option');
         opt.innerHTML = "Загрузка..."
         inventories.appendChild(opt);
@@ -156,6 +159,7 @@ function setViewInventory() {
 function getViewValues() {
     if (!isViewValuesLoaded) {
         var values = document.getElementById(viewValueID);
+        values.innerHTML = "";
         var opt = document.createElement('option');
         opt.innerHTML = "Загрузка..."
         values.appendChild(opt);
